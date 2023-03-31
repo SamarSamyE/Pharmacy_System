@@ -14,11 +14,9 @@ class Pharmacy extends Model
     use HasRoles;
 
     protected $fillable = [
-      'national_id',
-      'area_id',
-      'priority',
-
-
+        'national_id',
+        'area_id',
+        'priority',
     ];
 
     public function type()

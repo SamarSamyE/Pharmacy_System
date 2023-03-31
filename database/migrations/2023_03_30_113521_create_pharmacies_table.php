@@ -16,6 +16,7 @@ return new class extends Migration
                 $table->string('national_id')->unique();
                 $table->integer('area_id');
                 $table->integer('priority');
+                $table -> boolean('deleted_at')->default(false);
                 $table->timestamps();
         });
     }

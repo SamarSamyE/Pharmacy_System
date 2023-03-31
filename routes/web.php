@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\PharmacyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,14 +14,21 @@ use Illuminate\Support\Facades\Auth;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 Route::get('/dashboard', function () {
     return view('welcome');
 })->middleware(['auth'])->name('dashboard');
 
-
-Route::get('/admin', function () {
-    return view('Admin/index');
-})->middleware(['auth','role:admin'])->name('admin.index');
+Route::group(['middleware' =>['auth','role:admin']],function(){
+    Route::get('/admin', function () { return view('Admin/index'); })->name('admin.index');
+    Route::get('/pharmacies', [PharmacyController::class, 'index'])->name('pharmacies.index');
+    Route::get('/pharmacies/create', [PharmacyController::class, 'create'])->name('pharmacies.create');
+    Route::post('/pharmacies', [PharmacyController::class, 'store'])->name('pharmacies.store');
+    Route::get('/pharmacies/{id}/edit', [PharmacyController::class, 'edit'])->name('pharmacies.edit');
+    Route::put('/pharmacies/{id}', [PharmacyController::class, 'update'])->name('pharmacies.update');
+    Route::get('/pharmacies/{post}', [PostController::class, 'show'])->name('pharmacies.show');
+    Route::delete('/pharmacies/{id}', [PharmacyController::class, 'destroy'])->name('pharmacies.destroy');
+});
 
 
 Route::get('/doctor', function () {

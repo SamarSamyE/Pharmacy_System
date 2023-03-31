@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('national_id')->unique();
             $table->integer('pharmacy_id');
-            $table->boolean('is_banned')->default(false);;
+            $table->boolean('is_banned')->default(false);
             $table->timestamps();
         });
     }

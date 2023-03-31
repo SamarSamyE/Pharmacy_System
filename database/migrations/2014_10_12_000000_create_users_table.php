@@ -28,7 +28,7 @@ return new class extends Migration
             $table->integer('typeable_id')->unsigned()->nullable();
             // // this is using index
             // $table->index(['role_type', 'role_id']);
-            $table -> boolean('is_deleted')->default(false);
+            // $table -> boolean('is_deleted')->default(false);
             $table->index(['typeable_type', 'typeable_id']);
         });
     }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('gender');
             $table->date('birth_date');
             $table->string('mobile');
-            $table -> boolean('is_deleted')->default(false);
+            $table ->date('deleted_at')->nullable();
             $table->timestamps();
 
         });
