@@ -19,14 +19,19 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            // $table->string('avatar')->default('avatar.png');
+            $table->string('avatar')->nullable();
+
+            $table->string('typeable_type')->nullable();
+            // we will discuss it
+            $table->integer('typeable_id')->unsigned()->nullable();
+            // // this is using index
+            // $table->index(['role_type', 'role_id']);
+            $table -> boolean('is_deleted')->default(false);
+            $table->index(['typeable_type', 'typeable_id']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('users');
-    }
+
 };
