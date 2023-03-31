@@ -16,7 +16,6 @@ class PharmacyController extends Controller
     public function index()
     {
         $allpharmacies =Pharmacy::all();
-        // dd($allpharmacies);
         return view('Admin.pharmacies', ['pharmacies' => $allpharmacies]);
     }
 
