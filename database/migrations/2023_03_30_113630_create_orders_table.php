@@ -21,7 +21,6 @@ return new class extends Migration
             $table->integer('patient_id');
             $table->integer('patient_address_id');
             $table->double('price');
-            $table -> boolean('is_deleted')->default(false);
             $table->integer('area_id')->nullable();
             $table->timestamps();
         });

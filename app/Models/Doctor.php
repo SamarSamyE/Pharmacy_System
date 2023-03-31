@@ -16,8 +16,7 @@ class Doctor extends Model
         'is_banned',
     ];
 
-    public function type()
-    {
+    public function type(){
         return $this->morphOne(User::class, 'typeable');
     }
 

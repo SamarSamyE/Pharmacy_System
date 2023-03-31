@@ -10,18 +10,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 
-class PharmacyController extends Controller
+class DoctorController extends Controller
 {
 
     public function index()
     {
-        $allpharmacies =Pharmacy::all();
-        // dd($allpharmacies);
-        return view('Admin.pharmacies', ['pharmacies' => $allpharmacies]);
+        $allDoctors =Doctor::all();
+    //    dd($allpharmacies);
+        return view('Admin.doctors', ['doctors' => $allDoctors]);
     }
 
     public function show($id)
     {
+
         $pharmacy = Pharmacy::where('id', $id)->first();
         return view('pharmacies.show',['pharmacy' => $pharmacy]);
     }
@@ -90,3 +91,4 @@ public function update(StoreUserRequest $request, $id)
     return redirect()->route('pharmacies.index');
   }
 }
+

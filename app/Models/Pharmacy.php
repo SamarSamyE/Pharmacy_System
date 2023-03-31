@@ -10,8 +10,7 @@ use Spatie\Permission\Traits\HasRoles;
 class Pharmacy extends Model
 {
     use HasFactory;
-    use SoftDeletes;
-    use HasRoles;
+   protected $table="pharmacies";
 
     protected $fillable = [
         'national_id',
@@ -32,9 +31,21 @@ class Pharmacy extends Model
         return $this->hasMany(Order::class);
     }
 
-    public function Pharmacy_name()
-    {
-        return $this->hasOne(User::class,'id');
-
+    public function area(){
+        return $this->belongsTo(Area::class);
     }
+
+    public function getAreaNameAttribute(){
+        return $this->area->name;
+    }
+
+
+    // public function Pharmacy_name()
+    // {
+    //     return $this->hasOne(User::class,'id');
+    // }
+    // public function getUserNameAttribute()
+    // {
+    //     return $this->user->name;
+    // }
 }

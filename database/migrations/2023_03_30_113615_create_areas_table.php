@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('address');
             $table->timestamps();
-            $table -> boolean('is_deleted')->default(false);
-
         });
     }
 

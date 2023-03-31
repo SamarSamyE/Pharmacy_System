@@ -20,7 +20,6 @@ return new class extends Migration
             $table->integer('floor_number');
             $table->integer('flat_number');
             $table->boolean('is_main')->default(false);
-            $table -> boolean('is_deleted')->default(false);
             $table->timestamps();
         });
     }

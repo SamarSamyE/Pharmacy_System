@@ -12,4 +12,7 @@ class Area extends Model
         'name',
         'address',
     ];
+    public function pharmacies(){
+        return $this->hasOne(Area::class);
+    }
 }
