@@ -16,7 +16,7 @@ class Doctor extends Model
         'is_banned',
     ];
 
-    public function type()
+    public function type()//connect bet table user and doc
     {
         return $this->morphOne(User::class, 'typeable');
     }
@@ -24,4 +24,9 @@ class Doctor extends Model
     public function pharmacy(){
         return $this->belongsTo(Pharmacy::class);
     }
+
+
+    // public function user(){
+    //     return $this->morphMany(User::class);
+    // }
 }
