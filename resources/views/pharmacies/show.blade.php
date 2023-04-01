@@ -16,7 +16,7 @@
             <p class="card-text">Area Name: {{$pharmacy->area_name}}</p>
             <p class="card-text">Created_at: {{$pharmacy->created_at}}</p>
             <div>
-            <img src="{{asset('dist/img/'.$pharmacy->type->avatar)}}" class="img-fluid" style="height: 100px; width: 100px"/>
+            <img src="{{asset('storage/'.$pharmacy->type->avatar)}}" class="img-fluid" style="height: 100px; width: 100px"/>
             </div>
             </div>
             </div>

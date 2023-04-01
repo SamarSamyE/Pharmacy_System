@@ -14,10 +14,8 @@ class DoctorSeeder extends Seeder
      */
     public function run(): void
     {
-        Doctor::factory(10)->create()->each(function ($patient) {
-            $patient->type()->save(User::factory()->create());
+        Doctor::factory(10)->create()->each(function ($doctor) {
+            $doctor->type()->save(User::factory()->create());
         });
-
-
     }
 }
