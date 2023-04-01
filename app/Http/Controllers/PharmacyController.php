@@ -16,6 +16,7 @@ class PharmacyController extends Controller
     public function index()
     {
         $allpharmacies =Pharmacy::all();
+        // dd($allpharmacies);
         return view('Admin.pharmacies', ['pharmacies' => $allpharmacies]);
     }
 
@@ -27,15 +28,15 @@ class PharmacyController extends Controller
 
     public function create()
     {
-        $users = User::all();
-        return view('pharmacies.create', ['users' => $users]);
+        // $users = User::all();
+        return view('pharmacies.create');
     }
     public function edit($id)
     {
         $pharmcy = Pharmacy::find($id);
         return view('pharmacies.edit', compact('pharmacy'));
     }
-public function update(StoreUserRequest $request, $id)
+public function update(Request $request, $id)
 {
     $pharmacy = Pharmacy::find($id);
     $pharmacy->password = $request->input('password');
@@ -58,23 +59,36 @@ public function update(StoreUserRequest $request, $id)
     return redirect()->route('pharmacies.index');
 }
 
-    public function store(StoreUserRequest $request)
+    public function store(Request $request)
     {
-        $pharmacy=new Pharmacy();
-        $pharmacy->name = $request->input('name');
-        $pharmacy->password = $request->input('password');
-        $pharmacy->email = $request->input('email');
-        $pharmacy->national_id = $request->input('national_id');
-        $pharmacy->priority = $request->input('priority');
-        $pharmacy->area_id = $request->input('area_id');
 
+        $pharmacy=new Pharmacy();
+        $user = new User([
+        'name'=>$request->input('name'),
+        'email'=>$request->input('email'),
+        'password'=>$request->input('password'),
+        ]);
         if ($request->hasFile('avatar')) {
             $avatar = request()->file('avatar');
             $filename = time() . '.' . $avatar->getClientOriginalExtension();
             $avatar->storeAs('public', $filename);
-            $pharmacy->avatar = $filename;
+            $user->avatar = $filename;
         }
+
+        $pharmacy= new Pharmacy([
+            'priority'=>$request->input('priority'),
+            'area_id'=>$request->input('area_id'),
+            'national_id'=>$request->input('national_id')
+        ]);
+        // $user->name = $request->input('name');
+        // $user->password = $request->input('password');
+        // $user->email = $request->input('email');
+        // $pharmacy->national_id = $request->input('national_id');
+        // $pharmacy->priority = $request->input('priority');
+        // $pharmacy->area_id = $request->input('area_id');
         $pharmacy->save();
+        $user->typeable()->associate($pharmacy);
+        $user->save();
         return to_route('pharmacies.index');
     }
 

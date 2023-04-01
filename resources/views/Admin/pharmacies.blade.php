@@ -19,11 +19,10 @@
         </tr>
         </thead>
         <tbody>
-
         @foreach($pharmacies as $pharmacy)
             <tr>
                 <td>{{$pharmacy->id}}</td>
-                <td><img src="{{'dist/img/'.$pharmacy->type->avatar}}" class="img-fluid rounded-3 " style="height: 50px; width: 50px"></td>
+                <td><img src="{{asset ('storage/'.$pharmacy->type->avatar)}}" class="img-fluid rounded-3 " style="height: 50px; width: 50px"></td>
                 <td>{{$pharmacy->type->name}}</td>
                 <td>{{$pharmacy->priority}}</td>
                 <td>{{$pharmacy->area_name}}</td>
@@ -38,11 +37,8 @@
                         <button class="btn btn-danger fs-4">Delete</button>
                     </form>
                 </td>
-
             </tr>
         @endforeach
-
-
 
 
         </tbody>
