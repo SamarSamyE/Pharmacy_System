@@ -10,33 +10,34 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 
-class PharmacyController extends Controller
+class DoctorController extends Controller
 {
 
     public function index()
     {
-        $allpharmacies =Pharmacy::all();
-        // dd($allpharmacies);
-        return view('Admin.pharmacies', ['pharmacies' => $allpharmacies]);
+        $allDoctors =Doctor::all();
+    //    dd($allpharmacies);
+        return view('Admin.doctors', ['doctors' => $allDoctors]);
     }
 
     public function show($id)
     {
+
         $pharmacy = Pharmacy::where('id', $id)->first();
         return view('pharmacies.show',['pharmacy' => $pharmacy]);
     }
 
     public function create()
     {
-        // $users = User::all();
-        return view('pharmacies.create');
+        $users = User::all();
+        return view('pharmacies.create', ['users' => $users]);
     }
     public function edit($id)
     {
         $pharmcy = Pharmacy::find($id);
         return view('pharmacies.edit', compact('pharmacy'));
     }
-public function update(Request $request, $id)
+public function update(StoreUserRequest $request, $id)
 {
     $pharmacy = Pharmacy::find($id);
     $pharmacy->password = $request->input('password');
@@ -59,36 +60,23 @@ public function update(Request $request, $id)
     return redirect()->route('pharmacies.index');
 }
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-
         $pharmacy=new Pharmacy();
-        $user = new User([
-        'name'=>$request->input('name'),
-        'email'=>$request->input('email'),
-        'password'=>$request->input('password'),
-        ]);
+        $pharmacy->name = $request->input('name');
+        $pharmacy->password = $request->input('password');
+        $pharmacy->email = $request->input('email');
+        $pharmacy->national_id = $request->input('national_id');
+        $pharmacy->priority = $request->input('priority');
+        $pharmacy->area_id = $request->input('area_id');
+
         if ($request->hasFile('avatar')) {
             $avatar = request()->file('avatar');
             $filename = time() . '.' . $avatar->getClientOriginalExtension();
             $avatar->storeAs('public', $filename);
-            $user->avatar = $filename;
+            $pharmacy->avatar = $filename;
         }
-
-        $pharmacy= new Pharmacy([
-            'priority'=>$request->input('priority'),
-            'area_id'=>$request->input('area_id'),
-            'national_id'=>$request->input('national_id')
-        ]);
-        // $user->name = $request->input('name');
-        // $user->password = $request->input('password');
-        // $user->email = $request->input('email');
-        // $pharmacy->national_id = $request->input('national_id');
-        // $pharmacy->priority = $request->input('priority');
-        // $pharmacy->area_id = $request->input('area_id');
         $pharmacy->save();
-        $user->typeable()->associate($pharmacy);
-        $user->save();
         return to_route('pharmacies.index');
     }
 
@@ -103,3 +91,4 @@ public function update(Request $request, $id)
     return redirect()->route('pharmacies.index');
   }
 }
+

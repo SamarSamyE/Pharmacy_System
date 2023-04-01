@@ -15,8 +15,8 @@ class PharmacySeeder extends Seeder
     public function run(): void
     {
 
-    Pharmacy::factory(10)->create()->each(function ($patient) {
-        $patient->type()->save(User::factory()->create());
+    Pharmacy::factory(10)->create()->each(function ($pharmacy) {
+        $pharmacy->type()->save(User::factory()->create());
     });
 
     }

@@ -28,7 +28,7 @@ class User extends Authenticatable
 
     ];
     protected $attributes = [
-        'avatar' => 'dist/img/avatar.png',
+        'avatar' => 'avatar.png',
     ];
 
     /**

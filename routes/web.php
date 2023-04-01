@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PharmacyController;
-use App\Http\Controllers\PharmacyOwnerController;
-use App\Http\Controllers\MedicineController;
+use App\Http\Controllers\DoctorController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,11 +23,12 @@ Route::get('/dashboard', function () {
 Route::group(['middleware' =>['auth','role:admin']],function(){
     Route::get('/admin', function () { return view('Admin/index'); })->name('admin.index');
     Route::get('/pharmacies', [PharmacyController::class, 'index'])->name('pharmacies.index');
+    Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
     Route::get('/pharmacies/create', [PharmacyController::class, 'create'])->name('pharmacies.create');
     Route::post('/pharmacies', [PharmacyController::class, 'store'])->name('pharmacies.store');
     Route::get('/pharmacies/{id}/edit', [PharmacyController::class, 'edit'])->name('pharmacies.edit');
     Route::put('/pharmacies/{id}', [PharmacyController::class, 'update'])->name('pharmacies.update');
-    Route::get('/pharmacies/{post}', [PostController::class, 'show'])->name('pharmacies.show');
+    Route::get('/pharmacies/{post}', [PharmacyController::class, 'show'])->name('pharmacies.show');
     Route::delete('/pharmacies/{id}', [PharmacyController::class, 'destroy'])->name('pharmacies.destroy');
 });
 

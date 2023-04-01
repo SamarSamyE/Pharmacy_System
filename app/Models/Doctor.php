@@ -16,8 +16,7 @@ class Doctor extends Model
         'is_banned',
     ];
 
-    public function type()//connect bet table user and doc
-    {
+    public function type(){
         return $this->morphOne(User::class, 'typeable');
     }
 
