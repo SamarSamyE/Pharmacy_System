@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\PharmaciesDataTable;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\Doctor;
 use App\Models\Pharmacy;
@@ -13,10 +14,12 @@ use Illuminate\Support\Facades\Storage;
 class PharmacyController extends Controller
 {
 
-    public function index()
+    public function index(PharmaciesDataTable $dataTable)
     {
-        $allpharmacies =Pharmacy::all();
-        return view('Admin.pharmacies', ['pharmacies' => $allpharmacies]);
+        return $dataTable->render('Admin.pharmacies');
+
+        // $allpharmacies =Pharmacy::all();
+        // return view('Admin.pharmacies', ['pharmacies' => $allpharmacies]);
     }
 
     public function show($id)
