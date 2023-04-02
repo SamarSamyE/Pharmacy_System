@@ -98,7 +98,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/kanban.html" class="nav-link">
+            <a href="{{route('patients.index')}}" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
               <p>
                 Users
@@ -106,7 +106,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/kanban.html" class="nav-link">
+            <a href="{{ route('areas.index')}}" class="nav-link">
               <i class="nav-icon fas ion-ios-location"></i>
               <p>
                 Areas
@@ -114,7 +114,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/kanban.html" class="nav-link">
+            <a href="{{route('patientsAddress.index') }}" class="nav-link">
               <i class="nav-icon fas ion-ios-location"></i>
               <p>
                 Users Addresses

@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PharmacyController;
 use App\Http\Controllers\DoctorController;
-
+use App\Http\Controllers\AreaController;
+use App\Http\Controllers\PatientController;
+use App\Http\Controllers\PatientAddressController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,15 +26,25 @@ Route::group(['middleware' =>['auth','role:admin']],function(){
     Route::get('/admin', function () { return view('Admin/index'); })->name('admin.index');
     Route::get('/pharmacies', [PharmacyController::class, 'index'])->name('pharmacies.index');
     Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
+    Route::get('/areas', [AreaController::class, 'index'])->name('areas.index');
+    Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
+    Route::get('/patientsAddresses', [PatientAddressController::class, 'index'])->name('patientsAddress.index');
     Route::get('/pharmacies/create', [PharmacyController::class, 'create'])->name('pharmacies.create');
+    Route::get('/areas/create', [AreaController::class, 'create'])->name('areas.create');
     Route::post('/pharmacies', [PharmacyController::class, 'store'])->name('pharmacies.store');
+    Route::post('/areas', [AreaController::class, 'store'])->name('areas.store');
     Route::get('/pharmacies/{id}/edit', [PharmacyController::class, 'edit'])->name('pharmacies.edit');
+    Route::get('/areas/{id}/edit', [AreaController::class, 'edit'])->name('areas.edit');
     Route::put('/pharmacies/{id}', [PharmacyController::class, 'update'])->name('pharmacies.update');
+    Route::put('/areas/{id}', [AreaController::class, 'update'])->name('areas.update');
     Route::get('/pharmacies/{post}', [PharmacyController::class, 'show'])->name('pharmacies.show');
+    Route::get('/areas/{area}', [AreaController::class, 'show'])->name('areas.show');
     Route::delete('/pharmacies/{id}', [PharmacyController::class, 'destroy'])->name('pharmacies.destroy');
+    Route::delete('/areas/{id}', [AreaController::class, 'destroy'])->name('areas.destroy');
     Route::get('/deletedpharmacies', [PharmacyController::class, 'showTrashed'])->name('pharmacies.showTrashed');
     Route::patch('/pharmacies/{id}/restore',[PharmacyController::class, 'restoreTrashedPharmacies'])->name('pharmacies.restoreTrashedPharmacies');
     Route::delete('/pharmacies/{id}/force-delete', [PharmacyController::class, 'forceDeleteTrashedPharmacies'])->name('pharmacies.forceDelete');
+
 });
 
 
