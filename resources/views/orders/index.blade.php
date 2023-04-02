@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 
@@ -8,59 +7,57 @@
 
 
     <div class="text-center">
-        <a href="{{route('Doctors.create')}}" class="mt-4 btn btn-success">Create Post</a>
+        <a href="#" class="mt-4 btn btn-success">Create Order</a>
     </div>
     <table class="table mt-4">
         <thead>
         <tr>
             <!-- <th scope="col">#</th> -->
-            <th scope="col">name</th>
-            <th scope="col">national_id</th>
-            <th scope="col">pharmacy_id</th>
-            <th scope="col">is_banned</th>
-            <th scope="col">email</th>
-            <th scope="col">avatar</th>
+            <th scope="col">Order_Id</th>
+            <th scope="col">Ordered_UserName</th>
+            <th scope="col">Delevring_Address</th>
+            <th scope="col">Doctor_Name</th>
+            <th scope="col">Is_Insured</th>
+            <th scope="col">Status</th>
+            <th scope="col">Actions</th>
             <th scope="col">created_at</th>
-            <!-- <th scope="col">Created At</th>
-            <th scope="col">Actions</th> -->
         </tr>
         </thead>
         <tbody>
 <!-- i can access obj k arr or arrow -->
-@foreach($Doctor as $doc)
+@foreach($orders as $order)
             <tr>
-            <td>{{$doc->type->name}}</td>
-                <td>{{$doc->national_id}}</td>
-                <td>{{$doc->pharmacy_id}}</td>
+            <td>{{$order->id}}</td>
+                {{-- <td>{{$order->type->name}}</td> --}}
+                {{-- <td>{{$doc->pharmacy_id}}</td>
                 <td>{{$doc->is_banned}}</td>
                 <td>{{$doc->type->email}}</td>
                 <td><img src="{{asset ('storage/'.$doc->type->avatar)}}" class="img-fluid rounded-3 " style="height: 50px; width: 50px"></td>
-                <td>{{$doc->type->created_at->format('Y-m-d')}}</td>
+                <td>{{$doc->type->created_at->format('Y-m-d')}}</td> --}}
 
-                <!-- @if($doc->user)
+                {{-- <!-- @if($doc->user)
                 <td>{{$doc->user->name}}</td>
                 @else
                 <td>not found</td>
                 @endif -->
-                <td>
+                <td> --}}
             
 
-                    <a href="{{route('Doctors.show', $doc->id)}}" class="btn btn-info">View</a>
-                    <a href="{{route('Doctors.edit', $doc->id)}}"  class="btn btn-primary">Edit</a>
+                    {{-- <a href="#" class="btn btn-info">View</a>
+                    <a href="#"  class="btn btn-primary">Edit</a>
                     <!-- delete in a form method to can add my action -->
-                    <form style="display:inline" method="post" action="{{route('Doctors.destroy', $doc->id)}}"
+                    <form style="display:inline" method="post" action="#"
                     onclick="return confirm('Are you sure you want to delete this post?')">
                         @method('DELETE')
                         @csrf
                         <button class="btn btn-danger">Delete</button>
                     </form>
 
-                    </tr>
+                    </tr> --}}
 @endforeach
         </tbody>
 
        
-        <!-- Booosa   -->
         
     </table>
     @endsection

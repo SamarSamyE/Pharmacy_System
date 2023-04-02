@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PharmacyController;
 use App\Http\Controllers\DoctorController;
-
+use App\Http\Controllers\PharmacyOwnerController;
+use App\Http\Controllers\MedicineController;
+use App\Http\Controllers\OrderController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -55,15 +57,24 @@ Route::get('/pharmacy', function () {
     //{}as it allows me send anything
     Route::put('/pharmacy/Doctors/{id}', [PharmacyOwnerController::class, 'update'])->name('Doctors.update');
     Route::delete('pharmacy/Doctors/{id}', [PharmacyOwnerController::class, 'destroy'])->name('Doctors.destroy');
-    Route::get('pharmacy/Medicines', [MedicineController::class, 'index'])->name('Medicines.index');
-    
 
+
+    Route::get('pharmacy/Medicines', [MedicineController::class, 'index'])->name('Medicines.index');
+    Route::get('pharmacy/Medicines/create', [MedicineController::class, 'create'])->name('Medicines.create');
+    Route::post('/pharmacy/Medicines', [MedicineController::class, 'store'])->name('Medicines.store');
+    Route::get('pharmacy/Medicines/{id}', [MedicineController::class, 'show'])->name('Medicines.show');
+    Route::get('pharmacy/Medicines/edit/{Medicine}', [MedicineController::class, 'edit'])->name('Medicines.edit');
+    Route::put('/pharmacy/Medicines/{id}', [MedicineController::class, 'update'])->name('Medicines.update');
+    Route::delete('pharmacy/Medicines/{id}', [MedicineController::class, 'destroy'])->name('Medicines.destroy');
 
 
 
 });
 
+Route::group(['name' => 'orders','prefix' => 'orders','middleware' =>['role: admin|pharmacy|doctor', 'auth']],function(){
+    Route::get('/', [OrderController::class, 'index'])->name('orders.index');
 
+});
 
 Route::get('/patient', function () {
     return view('patient');
