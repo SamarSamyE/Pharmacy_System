@@ -30,6 +30,9 @@ Route::group(['middleware' =>['auth','role:admin']],function(){
     Route::put('/pharmacies/{id}', [PharmacyController::class, 'update'])->name('pharmacies.update');
     Route::get('/pharmacies/{post}', [PharmacyController::class, 'show'])->name('pharmacies.show');
     Route::delete('/pharmacies/{id}', [PharmacyController::class, 'destroy'])->name('pharmacies.destroy');
+    Route::get('/pharmacies/showTrashed', [PharmacyController::class, 'showTrashed'])->name('pharmacies.showTrashed');
+    Route::patch('/pharmacies/{id}/restore',[PharmacyController::class, 'restoreTrashedPharmacies'])->name('pharmacies.restoreTrashedPharmacies');
+    Route::delete('/pharmacies/{id}/force-delete', [PharmacyController::class, 'forceDeleteTrashedPharmacies'])->name('pharmacies.forceDelete');
 });
 
 

@@ -34,7 +34,7 @@ class PharmacyController extends Controller
         $pharmacy = Pharmacy::find($id);
         return view('pharmacies.edit', compact('pharmacy'));
     }
-    public function update(Request $request, $id)
+    public function update(StoreUserRequest $request, $id)
     {
         $pharmacy = Pharmacy::find($id);
         $user = User::find($pharmacy->type->id);
@@ -63,7 +63,7 @@ class PharmacyController extends Controller
         return redirect()->route('pharmacies.index');
     }
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
         $pharmacy=new Pharmacy();
         $user = new User([
@@ -73,7 +73,7 @@ class PharmacyController extends Controller
         ]);
         if ($request->hasFile('avatar')) {
 
-            $avatar = request()->file('avatar');
+            $avatar =$request->file('avatar');
             $filename = time() . '.' . $avatar->getClientOriginalExtension();
             $avatar->storeAs('public', $filename);
             $user->avatar = $filename;
@@ -90,15 +90,34 @@ class PharmacyController extends Controller
         return to_route('pharmacies.index');
     }
 
-        public function destroy(Request $request, $id){
+    public function destroy(Request $request, $id){
         $pharmacy = Pharmacy::findOrFail($id);
         $user = User::findOrFail($pharmacy->type->id);
-        if ($pharmacy->type->avatar) {
-            $avatarPath=$pharmacy->type->avatar;
-            Storage::delete('public/'.$avatarPath);
-        }
         $pharmacy->delete();
         $user->delete();
         return redirect()->route('pharmacies.index');
     }
+
+    public function showTrashed(){
+        $deletedPharmacies = Pharmacy::onlyTrashed()
+        ->with(['type' => function ($user) {
+        $user->withTrashed();}])->get();
+        return view('pharmacies.trashed', compact('deletedPharmacies'));
+    }
+
+    public function restoreTrashedPharmacies($id){
+    $pharmacy = Pharmacy::onlyTrashed()->findOrFail($id);
+    $user=User::findByPharmacy($pharmacy);
+    $pharmacy->restore();
+    $user->restore();
+    return to_route('pharmacies.index');
+    }
+
+    public function forceDeleteTrashedPharmacies($id){
+    $pharmacy = Pharmacy::onlyTrashed()->findOrFail($id);
+    $user=User::findByPharmacy($pharmacy);
+    $pharmacy->forceDelete();
+    $user->forceDelete();
+    return redirect()->back();
+}
 }

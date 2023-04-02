@@ -3,9 +3,14 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\UniqueNationalId;
 
 class StoreUserRequest extends FormRequest
 {
+    // protected $table;
+    // public function __construct($table){
+    //     $this->table=$table;
+    // }
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -22,7 +27,7 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-                'national_id' => ['required','unique:users'],
+                'national_id' => ['required',new UniqueNationalId],
                 'password'=>['required','size:6'],
                 'avatar' =>['max:2048', 'mimes:jpeg,jpg'],
             ];

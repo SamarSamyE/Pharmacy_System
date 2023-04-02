@@ -9,7 +9,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class Pharmacy extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
    protected $table="pharmacies";
 
     protected $fillable = [
@@ -17,6 +17,8 @@ class Pharmacy extends Model
         'area_id',
         'priority',
     ];
+
+    protected $dates = ['deleted_at'];
 
     public function type()
     {
@@ -39,13 +41,4 @@ class Pharmacy extends Model
         return $this->area->name;
     }
 
-
-    // public function Pharmacy_name()
-    // {
-    //     return $this->hasOne(User::class,'id');
-    // }
-    // public function getUserNameAttribute()
-    // {
-    //     return $this->user->name;
-    // }
 }

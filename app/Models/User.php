@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -11,7 +12,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles,SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
@@ -27,6 +28,8 @@ class User extends Authenticatable
         'avatar',
 
     ];
+
+    protected $dates = ['deleted_at'];
     protected $attributes = [
         'avatar' => 'avatar.png',
     ];
@@ -54,4 +57,10 @@ class User extends Authenticatable
     {
         return $this->morphTo();
     }
+    public function scopeFindByPharmacy($query, Pharmacy $pharmacy)
+{
+    return $query->where('typeable_type', Pharmacy::class)
+                     ->where('typeable_id', $pharmacy->id)
+                     ->first();
+}
 }
