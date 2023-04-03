@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AddressesController;
 use App\Http\Controllers\Api\PatientController;
 use App\Http\Resources\PatientResource;
 use App\Models\User;
@@ -26,8 +27,15 @@ Route::post('/register',[PatientController::class, 'register']);
 Route::post('/login', [PatientController::class, 'login']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    // protected routes go here
-    Route::put('/patient/8',[PatientController::class, 'update']);
+    // Patient Update
+    Route::put('/patient/{id}',[PatientController::class, 'update']);
+
+    //Patient Addresses
+    Route::get('/addresses', [AddressesController::class, 'index']);
+    Route::get('/address/{id}', [AddressesController::class, 'show']);
+    Route::post('/addresses', [AddressesController::class, 'store']);
+    Route::put('/address/{id}', [AddressesController::class, 'update']);
+    Route::delete('/address/{id}', [AddressesController::class, 'destroy']);
 });
 
 
