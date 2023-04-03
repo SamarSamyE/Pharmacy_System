@@ -3,10 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PharmacyController;
-use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PharmacyOwnerController;
-use App\Http\Controllers\MedicineController;
+use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\MedicineController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -58,7 +59,6 @@ Route::get('/pharmacy', function () {
     Route::put('/pharmacy/Doctors/{id}', [PharmacyOwnerController::class, 'update'])->name('Doctors.update');
     Route::delete('pharmacy/Doctors/{id}', [PharmacyOwnerController::class, 'destroy'])->name('Doctors.destroy');
 
-
     Route::get('pharmacy/Medicines', [MedicineController::class, 'index'])->name('Medicines.index');
     Route::get('pharmacy/Medicines/create', [MedicineController::class, 'create'])->name('Medicines.create');
     Route::post('/pharmacy/Medicines', [MedicineController::class, 'store'])->name('Medicines.store');
@@ -66,22 +66,29 @@ Route::get('/pharmacy', function () {
     Route::get('pharmacy/Medicines/edit/{Medicine}', [MedicineController::class, 'edit'])->name('Medicines.edit');
     Route::put('/pharmacy/Medicines/{id}', [MedicineController::class, 'update'])->name('Medicines.update');
     Route::delete('pharmacy/Medicines/{id}', [MedicineController::class, 'destroy'])->name('Medicines.destroy');
+    
 
 
 
-});
-
-Route::group(['name' => 'orders','prefix' => 'orders','middleware' =>['role: admin|pharmacy|doctor', 'auth']],function(){
-    Route::get('/', [OrderController::class, 'index'])->name('orders.index');
 
 });
+
+
 
 Route::get('/patient', function () {
     return view('patient');
 })->middleware(['auth','role:patient'])->name('patient.index');
 
+Route::group(['name' => 'Orders','prefix' => 'Orders','middleware' =>['role: admin|pharmacy|doctor', 'auth']],function(){
+    Route::get('/', [OrderController::class, 'index'])->name('Orders.index');
+    Route::get('/create',[OrderController::class, 'create'])->name('Orders.create');
+    Route::get('/edit',[OrderController::class, 'edit'])->name('Orders.edit');
+    Route::post('/', [OrderController::class, 'store'])->name('Orders.store');
+
+});
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 

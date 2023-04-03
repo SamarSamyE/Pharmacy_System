@@ -8,7 +8,7 @@
 
 
     <div class="text-center">
-        <a href="{{route('Doctors.create')}}" class="mt-4 btn btn-success">Create Post</a>
+        <a href="{{route('Doctors.create')}}" class="mt-4 btn btn-success">Add Doctors</a>
     </div>
     <table class="table mt-4">
         <thead>
@@ -32,7 +32,15 @@
             <td>{{$doc->type->name}}</td>
                 <td>{{$doc->national_id}}</td>
                 <td>{{$doc->pharmacy_id}}</td>
-                <td>{{$doc->is_banned}}</td>
+               <td>
+                @if($doc->is_banned==false)
+              <label class="py-2 px-3 btn-primary badge">Not banned</label>
+                @elseif($doc->is_banned==true)
+                <label class="py-2 px-3 btn-primary badge"> banned</label>
+                @endif
+</td>
+
+
                 <td>{{$doc->type->email}}</td>
                 <td><img src="{{asset ('storage/'.$doc->type->avatar)}}" class="img-fluid rounded-3 " style="height: 50px; width: 50px"></td>
                 <td>{{$doc->type->created_at->format('Y-m-d')}}</td>
@@ -59,9 +67,6 @@
 @endforeach
         </tbody>
 
-       
-        <!-- Booosa   -->
-        
     </table>
     @endsection
 

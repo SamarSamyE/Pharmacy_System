@@ -166,7 +166,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('orders.index')}}" class="nav-link">
+            <a href="{{ route('Orders.index')}}" class="nav-link">
               <i class="nav-icon fas ion-bag"></i>
               <p>
                 Orders
@@ -174,7 +174,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/kanban.html" class="nav-link">
+            <a href="pages/tables/jsgrid.html" class="nav-link">
               <i class="nav-icon fas fa-money-bill"></i>
               <p>
                 Revenue
