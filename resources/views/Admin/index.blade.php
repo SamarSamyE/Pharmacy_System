@@ -138,7 +138,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/kanban.html" class="nav-link">
+            <a href="{{ route('revenues.index')}}" class="nav-link">
               <i class="nav-icon fas ion-social-usd-outline"></i>
               <p>
                 Revenue

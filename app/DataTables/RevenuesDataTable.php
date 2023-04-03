@@ -2,8 +2,10 @@
 
 namespace App\DataTables;
 
-use App\Models\Area;
+use App\Models\Pharmacy;
+use App\Models\Revenue;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -12,7 +14,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class AreasDataTable extends DataTable
+class RevenuesDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -22,37 +24,31 @@ class AreasDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-        ->addColumn(
-            'actions',
-            '
-            <div class="d-flex flex-row justify-content-center" >
-                 <div class="d-flex flex-row gap-2">
-                 <div>
-                        <a  class="btn btn-success rounded" id="{{$id}}" href="{{Route("areas.edit",$id)}}">
-                            Edit
-                        </a>
-                     </div>
-                     <div>
-                        <a class="btn btn-primary rounded" href="{{Route("areas.show",$id)}}" >
-                            Show
-                        </a>
-                    </div>
-                    <div>
-                    <a  href="javascript:void(0)" id="delete-user" data-url="{{ route("areas.destroy",$id)}}"
-                    class="btn btn-danger">Delete</a>
-                    </div>
-                </div>
-            </div>'
-        )
-
-            ->rawColumns(['actions'])
+        // ->addColumn('Pharmacy Avatar',function(Pharmacy $pharmacy){
+        //     return '<img src="'. asset("storage/".$pharmacy->type->avatar) .'" width="40" class="img-circle" align="center" />';
+        // })
+        ->addColumn('Pharmacy Avatar',function(Pharmacy $pharmacy){
+         return '<img src="'. asset("storage/".$pharmacy->type->avatar) .'" width="40" class="img-circle" align="center" />';
+       })
+        ->addColumn('Pharmacy Name',function(Pharmacy $pharmacy){
+            return $pharmacy->type->name;
+        })
+        ->addColumn('totalOrders', function(Pharmacy $pharmacy) {
+           $totalOrders = $pharmacy->orders->count();
+           return $totalOrders;
+       })
+       ->addColumn('totalRevenue', function(Pharmacy $pharmacy) {
+        $totalOrders = $pharmacy->orders->sum("price");
+        return $totalOrders."$";
+    })
+        ->rawColumns(['Pharmacy Avatar'])
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Area $model): QueryBuilder
+    public function query(Pharmacy $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -63,7 +59,7 @@ class AreasDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('areas-table')
+                    ->setTableId('revenues-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
@@ -85,16 +81,10 @@ class AreasDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id'),
-            Column::make('name'),
-            Column::make('address'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
-            Column::computed('actions')
-            ->exportable(false)
-            ->printable(false)
-            ->width(60)
-            ->addClass('text-center'),
+            Column::computed('Pharmacy Avatar')->addClass('text-center')->title('Avatar'),
+            Column::computed('Pharmacy Name')->addClass('text-center'),
+            Column::computed('totalOrders')->addClass('text-center'),
+            Column::computed('totalRevenue')->addClass('text-center'),
         ];
     }
 
@@ -103,6 +93,6 @@ class AreasDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Areas_' . date('YmdHis');
+        return 'Revenues_' . date('YmdHis');
     }
 }

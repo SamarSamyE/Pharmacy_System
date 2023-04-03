@@ -7,6 +7,7 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PatientAddressController;
+use App\Http\Controllers\RevenueController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,6 +29,7 @@ Route::group(['middleware' =>['auth','role:admin']],function(){
     Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
     Route::get('/areas', [AreaController::class, 'index'])->name('areas.index');
     Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
+    Route::get('/revenues', [RevenueController::class, 'index'])->name('revenues.index');
     Route::get('/patientsAddresses', [PatientAddressController::class, 'index'])->name('patientsAddress.index');
     Route::get('/pharmacies/create', [PharmacyController::class, 'create'])->name('pharmacies.create');
     Route::get('/areas/create', [AreaController::class, 'create'])->name('areas.create');
@@ -56,9 +58,6 @@ Route::get('/pharmacy', function () {
     return view('Pharmacy/index');
 })->middleware(['auth','role:pharmacy'])->name('pharmacy.index');
 
-Route::get('/patient', function () {
-    return view('patient');
-})->middleware(['auth','role:patient'])->name('patient.index');
 
 
 Auth::routes();

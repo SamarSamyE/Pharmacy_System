@@ -81,9 +81,38 @@
             @yield('content')
         </main>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-    crossorigin="anonymous"></script>
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('body').on('click', '#delete-user', function () {
+
+          var userURL = $(this).data('url');
+          var trObj = $(this);
+
+          if(confirm("Are you sure you want to remove this user?") == true){
+                $.ajax({
+                    url: userURL,
+                    type: 'DELETE',
+                    dataType: 'json',
+                    success: function(data) {
+                        alert(data.success);
+                        trObj.parents("tr").remove();
+                    }
+                });
+          }
+
+       });
+
+    });
+
+</script>
     @stack('scripts')
 
 </body>

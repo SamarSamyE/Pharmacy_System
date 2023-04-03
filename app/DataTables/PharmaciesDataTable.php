@@ -30,7 +30,7 @@ class PharmaciesDataTable extends DataTable
             ->addColumn('Area',function(Pharmacy $pharmacy){
                 return $pharmacy->area_name;
             })
-            ->addColumn('Owner Name',function(Pharmacy $pharmacy){
+            ->addColumn('Pharmacy Name',function(Pharmacy $pharmacy){
                 return $pharmacy->type->name;
             })
             ->addColumn('Owner Email',function(Pharmacy $pharmacy){
@@ -55,13 +55,8 @@ class PharmaciesDataTable extends DataTable
                             </a>
                         </div>
                         <div>
-                            <form method="post" class="delete_item" action="{{Route("pharmacies.destroy",$id)}}">
-                                @csrf
-                                @method("DELETE")
-                                <button  id="delete_{{$id}}" >
-                                    Delete
-                                </button>
-                            </form>
+                        <a  href="javascript:void(0)"  id="delete-user"data-url="{{ route("pharmacies.destroy",$id)}}"
+                        class="btn btn-danger">Delete</a>
                         </div>
                     </div>
                 </div>'
@@ -80,6 +75,8 @@ class PharmaciesDataTable extends DataTable
     {
         return $model->newQuery();
     }
+
+
 
     /**
      * Optional method if you want to use html builder.
@@ -117,17 +114,11 @@ class PharmaciesDataTable extends DataTable
         return [
 
                     Column::computed('avatar')->addClass('text-center')->title('Avatar'),
-                    // Column::make('pharmacy_name')->addClass('text-center')->title('Name'),
                     Column::make('id')->addClass('text-center')->title('ID'),
-                    Column::computed('Owner Name')->addClass('text-center'),
+                    Column::computed('Pharmacy Name')->addClass('text-center')->searchable(),
                     Column::computed('Owner Email')->addClass('text-center'),
                     Column::computed('Area')->addClass('text-center'),
                     Column::make('priority')->addClass('text-center')->title('Priority'),
-                    // Column::computed('restore')
-                    //     ->exportable(false)
-                    //     ->printable(false)
-                    //     ->width(60)
-                    //     ->addClass('text-center'),
                     Column::computed('actions')
                         ->exportable(false)
                         ->printable(false)

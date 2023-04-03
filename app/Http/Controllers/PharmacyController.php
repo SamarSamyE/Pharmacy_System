@@ -17,9 +17,6 @@ class PharmacyController extends Controller
     public function index(PharmaciesDataTable $dataTable)
     {
         return $dataTable->render('Admin.pharmacies');
-
-        // $allpharmacies =Pharmacy::all();
-        // return view('Admin.pharmacies', ['pharmacies' => $allpharmacies]);
     }
 
     public function show($id)
@@ -98,7 +95,8 @@ class PharmacyController extends Controller
         $user = User::findOrFail($pharmacy->type->id);
         $pharmacy->delete();
         $user->delete();
-        return redirect()->route('pharmacies.index');
+        return response()->json(['success'=>'User Deleted Successfully!']);
+        // return redirect()->route('pharmacies.index');
     }
 
     public function showTrashed(){
