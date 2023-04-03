@@ -7,10 +7,13 @@ use App\Http\Requests\Api\SanctumTokenRequest;
 use App\Http\Requests\Api\RegisterPatientRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdatePatientRequest;
 use App\Http\Resources\PatientResource;
+use App\Jobs\SendVerificationEmailJob;
 use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class PatientController extends Controller
 {
@@ -60,10 +63,47 @@ class PatientController extends Controller
 
         $patient->save();
         $user->typeable()->associate($patient);
-        $user->save();
-
+       $user->save();
+       
+       SendVerificationEmailJob::dispatch($user);
        return new PatientResource($patient);
     }
+
+
+
+    public function update(UpdatePatientRequest $request)
+    { 
+        $id = auth()->user()->id;
+        $user = User::find($id);
+        $patient = Patient::find($user->typeable_id);
+        $patient->national_id = $request->national_id;
+        $patient->gender = $request->gender;
+        $patient->birth_date = $request->birth_date;
+        $patient->mobile = $request->mobile;
+
+        $patient->save();
+
+        $user->name = $request->name;
+        $user->password = $request->password;
+
+      
+        if ($request->hasFile('avatar')) {
+            if ($patient->type->avatar) {
+                $avatarPath=$patient->type->avatar;
+                Storage::delete('public/'.$avatarPath);
+            }
+            $avatar = $request->file('avatar');
+            $filename = time() . '.' . $avatar->getClientOriginalExtension();
+            $avatar->storeAs('public', $filename);
+            $user->avatar = $filename;
+        }
+
+        $user->save();
+
+       return new PatientResource($user);
+    }
+
+    
 
   
 

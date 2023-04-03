@@ -23,7 +23,7 @@ class Patient extends Model
         'mobile',
         'is_deleted',
     ];
-
+    protected $dates = ['deleted_at'];
     public function type(){
         return $this->morphOne(User::class, 'typeable');
        }

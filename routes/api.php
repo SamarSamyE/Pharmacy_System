@@ -19,12 +19,15 @@ use Illuminate\Validation\ValidationException;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
 
-Route::post("/register",[PatientController::class, 'register']);
+
+Route::post('/register',[PatientController::class, 'register']);
 
 Route::post('/login', [PatientController::class, 'login']);
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    // protected routes go here
+    Route::put('/patient/8',[PatientController::class, 'update']);
+});
 
 
