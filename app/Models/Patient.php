@@ -32,4 +32,7 @@ class Patient extends Model
     {
         return $this->hasMany(PatientAddress::class);
     }
+    public function orders(){
+        return $this->hasMany(Order::class);
+    }
 }

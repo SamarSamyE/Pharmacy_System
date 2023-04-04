@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AddressesController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PatientController;
 use App\Http\Resources\PatientResource;
 use App\Models\User;
@@ -30,12 +31,19 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Patient Update
     Route::put('/patient/{id}',[PatientController::class, 'update']);
 
-    //Patient Addresses
+    //Patient Addresses endpoints
     Route::get('/addresses', [AddressesController::class, 'index']);
     Route::get('/address/{id}', [AddressesController::class, 'show']);
     Route::post('/addresses', [AddressesController::class, 'store']);
     Route::put('/address/{id}', [AddressesController::class, 'update']);
     Route::delete('/address/{id}', [AddressesController::class, 'destroy']);
+
+   //Order endpoints
+   Route::get("/orders" , [OrderController::class, 'index']);
+   Route::post("/orders" , [OrderController::class, 'store']);
+   Route::get("/order/{id}" , [OrderController::class, 'show']);
+   Route::post("/order/{id}" , [OrderController::class, 'update']);
+   Route::delete('/order/{id}', [OrderController::class, 'destroy']) ;
 });
 
 
