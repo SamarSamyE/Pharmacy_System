@@ -39,15 +39,21 @@ Route::group(['middleware' =>['auth']],function(){
     Route::post('/areas', [AreaController::class, 'store'])->name('areas.store');
     Route::get('/pharmacies/{id}/edit', [PharmacyController::class, 'edit'])->name('pharmacies.edit');
     Route::get('/areas/{id}/edit', [AreaController::class, 'edit'])->name('areas.edit');
+    Route::get('/doctors/{id}/edit', [DoctorController::class, 'edit'])->name('doctors.edit');
+
     Route::put('/pharmacies/{id}', [PharmacyController::class, 'update'])->name('pharmacies.update');
+    
+    Route::put('/doctors/{id}', [DoctorController::class, 'update'])->name('doctors.update');
+
     Route::put('/areas/{id}', [AreaController::class, 'update'])->name('areas.update');
     Route::get('/pharmacies/{post}', [PharmacyController::class, 'show'])->name('pharmacies.show');
-    
     Route::get('doctors/{doctor}', [DoctorController::class, 'show'])->name('doctors.show');
-
     Route::get('/areas/{area}', [AreaController::class, 'show'])->name('areas.show');
     Route::delete('/pharmacies/{id}', [PharmacyController::class, 'destroy'])->name('pharmacies.destroy');
     Route::delete('/areas/{id}', [AreaController::class, 'destroy'])->name('areas.destroy');
+
+    Route::delete('/doctors/{id}', [DoctorController::class, 'destroy'])->name('doctors.destroy');
+
     Route::get('/deletedpharmacies', [PharmacyController::class, 'showTrashed'])->name('pharmacies.showTrashed');
     Route::patch('/pharmacies/{id}/restore',[PharmacyController::class, 'restoreTrashedPharmacies'])->name('pharmacies.restoreTrashedPharmacies');
     Route::delete('/pharmacies/{id}/force-delete', [PharmacyController::class, 'forceDeleteTrashedPharmacies'])->name('pharmacies.forceDelete');

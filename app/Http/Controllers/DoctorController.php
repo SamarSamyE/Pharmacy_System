@@ -72,7 +72,7 @@ public function update(Request $request, $id)
     }
     $user->save();
 
-    return redirect()->route('Doctors.index');
+    return redirect()->route('doctors.index');
 
 
 
@@ -120,11 +120,11 @@ public function update(Request $request, $id)
     public function destroy(Request $request, $id)
 {
 
-
-        $doc = Doctor::findOrFail($id);//is the id exists or not
-        $doc->delete();
-        return redirect()->route('Doctors.index');
-
+        $doctor = Doctor::findOrFail($id);
+        $user = User::findOrFail($doctor->type->id);
+        $doctor->delete();
+        $user->delete();
+        return response()->json(['success'=>'User Deleted Successfully!']);
 
   }
 

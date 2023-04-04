@@ -40,7 +40,7 @@ class DoctorsDataTable extends DataTable
             <div class="d-flex flex-row justify-content-center" >
                  <div class="d-flex flex-row gap-2">
                  <div>
-                        <a  class="btn btn-success rounded" id="{{$id}}" href="{{Route("pharmacies.edit",$id)}}">
+                        <a  class="btn btn-success rounded" id="{{$id}}" href="{{Route("doctors.edit",$id)}}">
                             Edit
                          </a>
                      </div>
@@ -50,7 +50,7 @@ class DoctorsDataTable extends DataTable
                         </a>
                     </div>
                     <div>
-                    <a  href="javascript:void(0)"  id="delete-user"data-url="{{ route("pharmacies.destroy",$id)}}"
+                    <a  href="javascript:void(0)"  id="delete-user"data-url="{{ route("doctors.destroy",$id)}}"
                     class="btn btn-danger">Delete</a>
                     </div>
                 </div>
