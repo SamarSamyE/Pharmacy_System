@@ -164,7 +164,7 @@
           @endrole
           @hasanyrole("admin|pharmacy|doctor")
           <li class="nav-item">
-            <a href="pages/kanban.html" class="nav-link">
+            <a href="{{ route('medicines.index')}}" class="nav-link">
               <i class="nav-icon fas fa-pills"></i>
               <p>
                 Medicines

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\MedicinesDataTable;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\StoreUserRequest;
@@ -11,21 +12,19 @@ use App\Models\User;
 class MedicineController extends Controller
 {
 
-    public function index()
+    public function index(MedicinesDataTable $dataTable)
     {
-        $allMedicines = Medicine::get();
-       
-            return view('medicines/index', ['Medicine' => $allMedicines]);
+        return $dataTable->render('Admin.medicines');
 
     }
+
 
     public function show($id)
     {
         
         $medicine = Medicine::where('id', $id)->first();
-        return view('pharmacy/Medicines/show', ['medicine' => $medicine]);
+        return view('medicines.show', ['medicine' => $medicine]);
        
-
 
     }
 
@@ -34,7 +33,7 @@ class MedicineController extends Controller
         $medicine = Medicine::all();
         //to be dynamic dropdown
 
-        return view('pharmacy/Medicines/create', ['medicine' => $medicine]);
+        return view('medicines.create', ['medicine' => $medicine]);
     }
 
     public function edit($id)//when i click on edit so to go to that post im clicking on ive to send id of that post
@@ -42,7 +41,7 @@ class MedicineController extends Controller
     {
         $medicine = Medicine::find($id);
       
-        return view('pharmacy/Medicines/edit', compact('medicine'));
+        return view('medicines.edit', compact('medicine'));
     }
     public function update(Request $request, $id)
     {
@@ -58,7 +57,7 @@ class MedicineController extends Controller
     
        // put here order medicine after we add relation on it 
     
-        return redirect()->route('Medicines.index');
+        return redirect()->route('medicines.index');
     
     
     
@@ -81,7 +80,7 @@ class MedicineController extends Controller
         $medicine->save();
 
 
-        return to_route('Medicines.index');
+        return to_route('medicines.index');
 
 
     }
@@ -92,7 +91,7 @@ class MedicineController extends Controller
     
             $medicine = Medicine::findOrFail($id);//is the id exists or not
             $medicine->delete();
-            return redirect()->route('Medicines.index');
+            return redirect()->route('medicines.index');
     
     
       }

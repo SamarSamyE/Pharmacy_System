@@ -8,6 +8,7 @@ use App\Http\Controllers\AreaController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PatientAddressController;
 use App\Http\Controllers\RevenueController;
+use App\Http\Controllers\MedicineController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,28 +32,42 @@ Route::group(['middleware' =>['auth']],function(){
     Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
     Route::get('/revenues', [RevenueController::class, 'index'])->name('revenues.index');
     Route::get('/patientsAddresses', [PatientAddressController::class, 'index'])->name('patientsAddress.index');
+    Route::get('/medicines', [MedicineController::class, 'index'])->name('medicines.index');
+
+
     Route::get('/pharmacies/create', [PharmacyController::class, 'create'])->name('pharmacies.create');
     Route::get('/areas/create', [AreaController::class, 'create'])->name('areas.create');
     Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
+
+    Route::get('/medicines/create', [MedicineController::class, 'create'])->name('medicines.create');
+
     Route::post('/pharmacies', [PharmacyController::class, 'store'])->name('pharmacies.store');
     Route::post('/doctors', [DoctorController::class, 'store'])->name('doctors.store');
     Route::post('/areas', [AreaController::class, 'store'])->name('areas.store');
+    Route::post('/medicines', [MedicineController::class, 'store'])->name('medicines.store');
+
     Route::get('/pharmacies/{id}/edit', [PharmacyController::class, 'edit'])->name('pharmacies.edit');
     Route::get('/areas/{id}/edit', [AreaController::class, 'edit'])->name('areas.edit');
     Route::get('/doctors/{id}/edit', [DoctorController::class, 'edit'])->name('doctors.edit');
+    Route::get('/medicines/{id}/edit', [MedicineController::class, 'edit'])->name('medicines.edit');
+
 
     Route::put('/pharmacies/{id}', [PharmacyController::class, 'update'])->name('pharmacies.update');
-    
     Route::put('/doctors/{id}', [DoctorController::class, 'update'])->name('doctors.update');
-
     Route::put('/areas/{id}', [AreaController::class, 'update'])->name('areas.update');
+    Route::put('/medicines/{id}', [MedicineController::class, 'update'])->name('medicines.update');
+
     Route::get('/pharmacies/{post}', [PharmacyController::class, 'show'])->name('pharmacies.show');
     Route::get('doctors/{doctor}', [DoctorController::class, 'show'])->name('doctors.show');
     Route::get('/areas/{area}', [AreaController::class, 'show'])->name('areas.show');
+    Route::get('/medicines/{area}', [MedicineController::class, 'show'])->name('medicines.show');
+
+
+
     Route::delete('/pharmacies/{id}', [PharmacyController::class, 'destroy'])->name('pharmacies.destroy');
     Route::delete('/areas/{id}', [AreaController::class, 'destroy'])->name('areas.destroy');
-
     Route::delete('/doctors/{id}', [DoctorController::class, 'destroy'])->name('doctors.destroy');
+    Route::delete('/medicines/{id}', [MedicineController::class, 'destroy'])->name('medicines.destroy');
 
     Route::get('/deletedpharmacies', [PharmacyController::class, 'showTrashed'])->name('pharmacies.showTrashed');
     Route::patch('/pharmacies/{id}/restore',[PharmacyController::class, 'restoreTrashedPharmacies'])->name('pharmacies.restoreTrashedPharmacies');
