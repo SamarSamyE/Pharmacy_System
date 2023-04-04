@@ -23,8 +23,8 @@ Route::get('/dashboard', function () {
     return view('welcome');
 })->middleware(['auth'])->name('dashboard');
 
-Route::group(['middleware' =>['auth','role:admin']],function(){
-    Route::get('/admin', function () { return view('Admin/index'); })->name('admin.index');
+Route::group(['middleware' =>['auth']],function(){
+
     Route::get('/pharmacies', [PharmacyController::class, 'index'])->name('pharmacies.index');
     Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
     Route::get('/areas', [AreaController::class, 'index'])->name('areas.index');
@@ -48,17 +48,9 @@ Route::group(['middleware' =>['auth','role:admin']],function(){
     Route::delete('/pharmacies/{id}/force-delete', [PharmacyController::class, 'forceDeleteTrashedPharmacies'])->name('pharmacies.forceDelete');
 
 });
-
-
-Route::get('/doctor', function () {
-    return view('Doctor/index');
-})->middleware(['auth','role:doctor'])->name('doctor.index');
-
-Route::get('/pharmacy', function () {
-    return view('Pharmacy/index');
-})->middleware(['auth','role:pharmacy'])->name('pharmacy.index');
-
-
+Route::get('/users', function () {
+    return view('Admin/index');
+})->middleware(['auth'])->name('admin.index');
 
 Auth::routes();
 

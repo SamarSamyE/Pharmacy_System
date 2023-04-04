@@ -2,93 +2,132 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
 use App\Http\Requests\StoreUserRequest;
 use App\Models\Doctor;
 use App\Models\Pharmacy;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-
 
 class DoctorController extends Controller
 {
-
+    //create doc fns
     public function index()
     {
-        $allDoctors =Doctor::all();
-    //    dd($allpharmacies);
-        return view('Admin.doctors', ['doctors' => $allDoctors]);
-    }
+        $allDoctors = Doctor::get();
+        return view('pharmacy/Doctors/index', ['Doctor' => $allDoctors]);
 
-    public function show($id)
-    {
-
-        $pharmacy = Pharmacy::where('id', $id)->first();
-        return view('pharmacies.show',['pharmacy' => $pharmacy]);
     }
 
     public function create()
     {
-        $users = User::all();
-        return view('pharmacies.create', ['users' => $users]);
-    }
-    public function edit($id)
-    {
-        $pharmcy = Pharmacy::find($id);
-        return view('pharmacies.edit', compact('pharmacy'));
-    }
-public function update(StoreUserRequest $request, $id)
-{
-    $pharmacy = Pharmacy::find($id);
-    $pharmacy->password = $request->input('password');
-    $pharmacy->email = $request->input('email');
-    $pharmacy->national_id = $request->input('national_id');
-    $pharmacy->priority = $request->input('priority');
-    $pharmacy->area_id = $request->input('area_id');
+        $doctor = Doctor::all();
+        //to be dynamic dropdown
 
-    if ($request->hasFile('avatar')) {
-        if ($pharmacy->avatar) { /////the avatar path for this pharmacy
-            $avatarPath=$pharmacy->avatar;
-            Storage::delete('public/'.$avatarPath);
-        }
-        $avatar = request()->file('avatar');
-        $filename = time() . '.' . $avatar->getClientOriginalExtension();
-        $avatar->storeAs('public/', $filename);
-        $pharmacy->avatar = $filename;
+        return view('pharmacy/Doctors/create', ['doctor' => $doctor]);
     }
-    $pharmacy->save();
-    return redirect()->route('pharmacies.index');
+
+
+
+    public function show($id)
+   {
+ $doctor = Doctor::where('id', $id)->first();
+
+    // dd($doctor);
+    return view('pharmacy/Doctors/show', ['doctor' => $doctor]);
+
+// $data = 'this is a test';
+// return view('pharmacy/Doctors/show', compact(['data']));
+
+
+    }
+
+
+    public function edit($id)//when i click on edit so to go to that post im clicking on ive to send id of that post
+
+    {
+        $doctor = Doctor::find($id);
+
+        return view('pharmacy/Doctors/edit', compact('doctor'));
+    }
+
+
+public function update(Request $request, $id)
+{
+    $doctor = Doctor::find($id);
+    $user = User::find($doctor->type->id);
+
+    $doctor->pharmacy_id = $request->input('pharmacy_id');
+    $doctor->national_id = $request->input('national_id');
+    $doctor->save();
+
+    $user->name = $request->input('name');
+    $user->email = $request->input('email');
+    if ($request->input('password')) {
+        $user->password = bcrypt($request->input('password'));
+    }
+    if ($request->hasFile('avatar')) {
+        $avatar = $request->file('avatar');
+        $filename = time() . '.' . $avatar->getClientOriginalExtension();
+        $avatar->storeAs('public', $filename);
+        $user->avatar = $filename;
+    }
+    $user->save();
+
+    return redirect()->route('Doctors.index');
+
+
+
 }
 
-    public function store(StoreUserRequest $request)
+    public function store(Request $request)
     {
-        $pharmacy=new Pharmacy();
-        $pharmacy->name = $request->input('name');
-        $pharmacy->password = $request->input('password');
-        $pharmacy->email = $request->input('email');
-        $pharmacy->national_id = $request->input('national_id');
-        $pharmacy->priority = $request->input('priority');
-        $pharmacy->area_id = $request->input('area_id');
 
-        if ($request->hasFile('avatar')) {
-            $avatar = request()->file('avatar');
-            $filename = time() . '.' . $avatar->getClientOriginalExtension();
-            $avatar->storeAs('public', $filename);
-            $pharmacy->avatar = $filename;
-        }
-        $pharmacy->save();
-        return to_route('pharmacies.index');
+//   $doctor=new Doctor();
+  $user = new User([
+
+'name'=>$request ->input('name'),
+'email'=>$request ->input('email'),
+'password'=>$request ->input('password')
+  ]);
+
+  if($request->hasFile('avatar')){
+
+    $avatar=request()->file('avatar');
+    $filename=time(). '.' . $avatar->getClientOriginalExtension();
+    $avatar->storeAs('public',$filename);
+    $user->avatar= $filename;
+  }
+  $doctor=new Doctor([
+    'national_id' => $request->input('national_id'),
+    'pharmacy_id' => $request->input('pharmacy_id')
+
+
+  ]);
+
+  $doctor->save();
+  $user->typeable()->associate($doctor);
+  $user->save();
+
+//   $doctor->national_id = $request->input('national_id');
+//   $doctor->type->name = $request->input('name');
+//   $doctor->type->email = $request->input('email');
+//   $doctor->is_banned = $request->input('is_banned');
+
+        return to_route('Doctors.index');
+
+
     }
 
     public function destroy(Request $request, $id)
 {
-    $pharmacy = Pharmacy::findOrFail($id);
-    if ($pharmacy->avatar) {
-        $avatarPath=$pharmacy->avatar;
-        Storage::delete('public/'.$avatarPath);
-    }
-    $pharmacy->delete();
-    return redirect()->route('pharmacies.index');
-  }
-}
 
+
+        $doc = Doctor::findOrFail($id);//is the id exists or not
+        $doc->delete();
+        return redirect()->route('Doctors.index');
+
+
+  }
+
+}

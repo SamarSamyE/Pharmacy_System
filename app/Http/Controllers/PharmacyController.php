@@ -65,7 +65,7 @@ class PharmacyController extends Controller
 
     public function store(StoreUserRequest $request)
     {
-        $pharmacy=new Pharmacy();
+      
         $user = new User([
         'name'=>$request->input('name'),
         'email'=>$request->input('email'),

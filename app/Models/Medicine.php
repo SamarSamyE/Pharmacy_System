@@ -18,8 +18,6 @@ class Medicine extends Model
 
 
     public function orders(){
-
         return $this->belongsToMany(Order::class);
-
     }
 }
