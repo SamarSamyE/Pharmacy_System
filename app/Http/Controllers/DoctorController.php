@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\DoctorsDataTable;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\StoreUserRequest;
@@ -12,18 +13,15 @@ use App\Models\User;
 class DoctorController extends Controller
 {
     //create doc fns
-    public function index()
+    public function index(DoctorsDataTable $dataTable)
     {
-        $allDoctors = Doctor::get();
-        return view('pharmacy/Doctors/index', ['Doctor' => $allDoctors]);
+        return $dataTable->render('Admin.doctors');
 
     }
 
     public function create()
     {
         $doctor = Doctor::all();
-        //to be dynamic dropdown
-
         return view('pharmacy/Doctors/create', ['doctor' => $doctor]);
     }
 

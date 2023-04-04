@@ -22,8 +22,42 @@ class DoctorsDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'doctors.action')
-            ->setRowId('id');
+        ->addColumn('Doctor Name',function(Doctor $doctor){
+            return $doctor->type->name;
+        })
+        ->addColumn('Pharmacy Name',function(Doctor $doctor){
+            return $doctor->pharmacy->type->name;
+        })
+        ->addColumn('Doctor Email',function(Doctor $doctor){
+            return $doctor->type->email;
+        })
+        ->addColumn('avatar',function(Doctor $doctor){
+            return '<img src="'. asset("storage/".$doctor->type->avatar) .'" width="40" class="img-circle" align="center" />';
+        })
+        ->addColumn(
+            'actions',
+            '
+            <div class="d-flex flex-row justify-content-center" >
+                 <div class="d-flex flex-row gap-2">
+                 <div>
+                        <a  class="btn btn-success rounded" id="{{$id}}" href="{{Route("pharmacies.edit",$id)}}">
+                            Edit
+                         </a>
+                     </div>
+                     <div>
+                        <a class="btn btn-primary rounded" href="{{Route("pharmacies.show",$id)}}" >
+                            Show
+                        </a>
+                    </div>
+                    <div>
+                    <a  href="javascript:void(0)"  id="delete-user"data-url="{{ route("pharmacies.destroy",$id)}}"
+                    class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>'
+        )
+        ->rawColumns(['avatar', 'actions'])
+        ->setRowId('id');
     }
 
     /**
@@ -62,15 +96,18 @@ class DoctorsDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
-            Column::make('id'),
-            Column::make('add your columns'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+            Column::computed('avatar')->addClass('text-center')->title('Avatar'),
+            Column::make('id')->addClass('text-center')->title('ID'),
+            Column::make('national_id')->addClass('text-center'),
+            Column::make('is_banned')->addClass('text-center'),
+            Column::computed('Pharmacy Name')->addClass('text-center')->searchable(),
+            Column::computed('Doctor Name')->addClass('text-center')->searchable(),
+            Column::computed('Doctor Email')->addClass('text-center'),
+            Column::computed('actions')
+                        ->exportable(false)
+                        ->printable(false)
+                        ->width(60)
+                        ->addClass('text-center')
         ];
     }
 
