@@ -32,4 +32,6 @@ class StoreUserRequest extends FormRequest
                 'avatar' =>['max:2048', 'mimes:jpeg,jpg'],
             ];
     }
+
+
 }

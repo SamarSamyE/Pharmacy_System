@@ -7,8 +7,7 @@
             <div class="card-header">Manage Users</div>
             <div class="card-body">
             <div class="text-center">
-        <a href="{{route('pharmacies.create')}}" class="mt-4 btn btn-success fs-4">Create Pharmacy</a>
-        <a href="{{route('pharmacies.showTrashed')}}" class="mt-4 btn btn-success fs-4">Show Trashed</a>
+        <a href="{{route('doctors.create')}}" class="mt-4 btn btn-success fs-4">Create Doctor</a>
          </div>
                 {{ $dataTable->table() }}
             </div>

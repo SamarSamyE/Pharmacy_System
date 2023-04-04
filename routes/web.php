@@ -33,7 +33,9 @@ Route::group(['middleware' =>['auth']],function(){
     Route::get('/patientsAddresses', [PatientAddressController::class, 'index'])->name('patientsAddress.index');
     Route::get('/pharmacies/create', [PharmacyController::class, 'create'])->name('pharmacies.create');
     Route::get('/areas/create', [AreaController::class, 'create'])->name('areas.create');
+    Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
     Route::post('/pharmacies', [PharmacyController::class, 'store'])->name('pharmacies.store');
+    Route::post('/doctors', [DoctorController::class, 'store'])->name('doctors.store');
     Route::post('/areas', [AreaController::class, 'store'])->name('areas.store');
     Route::get('/pharmacies/{id}/edit', [PharmacyController::class, 'edit'])->name('pharmacies.edit');
     Route::get('/areas/{id}/edit', [AreaController::class, 'edit'])->name('areas.edit');

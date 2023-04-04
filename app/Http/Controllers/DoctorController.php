@@ -22,7 +22,7 @@ class DoctorController extends Controller
     public function create()
     {
         $doctor = Doctor::all();
-        return view('pharmacy/Doctors/create', ['doctor' => $doctor]);
+        return view('doctors.create', ['doctor' => $doctor]);
     }
 
 
@@ -32,7 +32,7 @@ class DoctorController extends Controller
  $doctor = Doctor::where('id', $id)->first();
 
     // dd($doctor);
-    return view('pharmacy/Doctors/show', ['doctor' => $doctor]);
+    return view('doctors.show', ['doctor' => $doctor]);
 
 // $data = 'this is a test';
 // return view('pharmacy/Doctors/show', compact(['data']));
@@ -78,7 +78,7 @@ public function update(Request $request, $id)
 
 }
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
 
 //   $doctor=new Doctor();
@@ -112,7 +112,7 @@ public function update(Request $request, $id)
 //   $doctor->type->email = $request->input('email');
 //   $doctor->is_banned = $request->input('is_banned');
 
-        return to_route('Doctors.index');
+        return to_route('doctors.index');
 
 
     }

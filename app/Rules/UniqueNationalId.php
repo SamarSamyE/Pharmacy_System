@@ -21,7 +21,7 @@ class UniqueNationalId implements Rule
 
         return $count === 0;
     }
-    public function message()
+public function message()
     {
         return 'The :attribute must be unique.';
     }
