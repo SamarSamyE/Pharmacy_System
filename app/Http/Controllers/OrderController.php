@@ -8,9 +8,10 @@ use App\Models\Patient;
 use App\Models\Doctor;
 use App\Models\User;
 use App\Models\Medicine;
+use App\Models\MedicineOrder;
 use App\Models\Pharmacy;
 use App\Models\Order;
-
+use App\Models\PatientAddress;
 
 
 class OrderController extends Controller
@@ -35,7 +36,7 @@ class OrderController extends Controller
         
         $patients = Patient::all();
         // dd($patients);
-        $doctors = User::Role('doctor')->get();
+        $doctors = Doctor::all();
         $medicine = Medicine::all();
         $pharmacy = Pharmacy::all();
         // dd($pharmacy);
@@ -52,31 +53,45 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $Order=new Order();
-        $PatientAddress= new PatientAddress();
-        // $data = $request->all();
-        // dd($data);
-        // $userId = User::all()->where('name', $data['name'])->first()->id;
-        // dd($userId);
-        $userId=$Order->patient->id;
-        dd($userId);
-        $docId = User::all()->where('name', $data['DocName'])->first()->id;
-        // dd($docId);
-        $pharmacyId = Pharmacy::all()->where('name', $data['PharmacyName'])->first()->id;
+         //dd($request);
+       $quan = $request->quantity;
+        $patient_id =$request->Patientname;
+        $patient_address_id= PatientAddress::where('id',$patient_id)->first();
 
-        
-        $order = Order::create([
-            'patient_id'=>$request-> $userId,
-            
-            'doctor_id' => $docId,
-            'is_insured' => $request->is_insured ? $request->is_insured : 0,
-            'status' => 'new',
-            'pharmacy_id' =>$pharmacyId,
-            // 'Actions' => '--',
-            'creator_id' => 2
-        ]);
+        $Medicine_id = $request->medicines;
 
-        return redirect("/orders/$order->id");
+        //dd($Medicine_id);
+         //dd($patient_address_id->id);
+        $Order=new Order(
+            [
+                'pharmacy_id' => $request->input('PharmacyName'),
+                'doctor_id' => $request->input('DocName'),
+                'patient_id'=>$request->input('Patientname'),
+                'is_insured' => $request->has('is_insured')? 1:0,
+                'status'=>"new",
+                'creator_type'=>$request->input('creator_type'),
+                'patient_address_id'=>$patient_address_id->id,
+                'price'=>0
+
+
+            ]
+        );    //is_insured , is_insured  , name,Patientname, pharmacy_id,doctor_id ,patient_id
+
+
+        $MedicineOreder= new MedicineOrder(
+           [ 
+            'quantity' => $request->input('quantity'),
+            'medicine_id'=>$Medicine_id 
+           ]
+
+        );
+
+       $Order->price = Order::totalPrice($quan, $Medicine_id);
+
+        $Order->save();
+        $MedicineOreder->order()->associate($Order);
+        $MedicineOreder->save();
+        return redirect()->route('Orders.index');
     }
 
     /**

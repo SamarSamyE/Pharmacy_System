@@ -26,7 +26,4 @@ class Doctor extends Model
     }
 
 
-    // public function user(){
-    //     return $this->morphMany(User::class);
-    // }
 }

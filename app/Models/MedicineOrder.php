@@ -15,4 +15,13 @@ class MedicineOrder extends Model
         'medicine_id',
 
     ];
+
+    public function medicines(){
+        return $this->hasMany(Medicine::class);
+    }
+    public function order(){
+        return $this->belongsTo(Order::class);
+    }
 }
+
+

@@ -9,9 +9,14 @@ class Order extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'quantity',
-        'order_id',
-        'medicine_id',
+        'is_insured',
+        'status',
+        'creator_type',
+        'pharmacy_id',
+        'doctor_id',
+        'patient_id',
+        'patient_address_id',
+        'price',
     ];
 
     public function medicine(){
@@ -37,4 +42,15 @@ class Order extends Model
     public function image(){
         return $this->hasMany(OrderImage::class);
     }
+
+    
+
+    public static function totalPrice( $quantity ,$MedicineOreder){
+        $totalPrice = 0;
+            $price = Medicine::where('id',$MedicineOreder)->first()->price;
+            $totalPrice += $price * $quantity;
+        
+        return $totalPrice;
+    }
+
 }

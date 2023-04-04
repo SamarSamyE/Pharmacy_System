@@ -109,7 +109,7 @@ class OrdersDataTable extends DataTable
              Column::computed('name')->title('client name'),
              Column::make('status'),
              Column::computed('is_insured')->title('insured'),
-             Column::make('creator_id')->title('creator'),
+             Column::make('creator_type')->title('creator'),
              Column::computed('Pharmacy Owner'),
              Column::computed('doctor_id')->title('doctor'),
              Column::make('patient_address_id'),
