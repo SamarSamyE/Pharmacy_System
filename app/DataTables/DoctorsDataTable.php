@@ -45,7 +45,7 @@ class DoctorsDataTable extends DataTable
                          </a>
                      </div>
                      <div>
-                        <a class="btn btn-primary rounded" href="{{Route("pharmacies.show",$id)}}" >
+                        <a class="btn btn-primary rounded" href="{{Route("doctors.show",$id)}}" >
                             Show
                         </a>
                     </div>

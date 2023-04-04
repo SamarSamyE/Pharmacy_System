@@ -46,7 +46,7 @@ class DoctorController extends Controller
     {
         $doctor = Doctor::find($id);
 
-        return view('pharmacy/Doctors/edit', compact('doctor'));
+        return view('doctors.edit', compact('doctor'));
     }
 
 

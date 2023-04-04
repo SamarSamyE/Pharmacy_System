@@ -42,6 +42,9 @@ Route::group(['middleware' =>['auth']],function(){
     Route::put('/pharmacies/{id}', [PharmacyController::class, 'update'])->name('pharmacies.update');
     Route::put('/areas/{id}', [AreaController::class, 'update'])->name('areas.update');
     Route::get('/pharmacies/{post}', [PharmacyController::class, 'show'])->name('pharmacies.show');
+    
+    Route::get('doctors/{doctor}', [DoctorController::class, 'show'])->name('doctors.show');
+
     Route::get('/areas/{area}', [AreaController::class, 'show'])->name('areas.show');
     Route::delete('/pharmacies/{id}', [PharmacyController::class, 'destroy'])->name('pharmacies.destroy');
     Route::delete('/areas/{id}', [AreaController::class, 'destroy'])->name('areas.destroy');
