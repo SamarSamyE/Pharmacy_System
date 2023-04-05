@@ -38,8 +38,15 @@ class PharmacyController extends Controller
     {
         $pharmacy = Pharmacy::find($id);
         $user = User::find($pharmacy->type->id);
-        $pharmacy->priority = $request->input('priority');
-        $pharmacy->area_id = $request->input('area_id');
+if (auth()->user()->hasRole('admin')) {
+    $pharmacy->priority = $request->input('priority');
+    $pharmacy->area_id = $request->input('area_id');
+}
+else if(auth()->user()->hasRole('pharmacy')){
+    $pharmacy->priority = auth()->user()->typeable->priority;
+    $pharmacy->area_id = auth()->user()->typeable->area_id;
+
+}
         $pharmacy->national_id = $request->input('national_id');
         $pharmacy->save();
 
@@ -65,7 +72,7 @@ class PharmacyController extends Controller
 
     public function store(StoreUserRequest $request)
     {
-      
+
         $user = new User([
         'name'=>$request->input('name'),
         'email'=>$request->input('email'),

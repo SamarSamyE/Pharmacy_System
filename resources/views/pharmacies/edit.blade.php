@@ -22,10 +22,12 @@
             <label for="exampleFormControlInput1" class="form-label"><strong>Password</strong></label>
             <input name="password" type="text" class="form-control" id="exampleFormControlInput1"  value="{{$pharmacy->type->password}}">
         </div>
+
         <div class="mt-3 mb-3">
             <label for="exampleFormControlInput1" class="form-label"><strong>National ID</strong></label>
             <input name="national_id" type="text" class="form-control" id="exampleFormControlInput1"  value="{{$pharmacy->national_id}}">
         </div>
+        @role('admin')
         <div class="mt-3 mb-3">
             <label for="exampleFormControlInput1" class="form-label"><strong>Priority</strong></strong></label>
             <input name="priority" type="text" class="form-control" id="exampleFormControlInput1" value=" {{$pharmacy->priority}}">
@@ -34,6 +36,7 @@
             <label for="exampleFormControlInput1" class="form-label"><strong>Area ID</strong></label>
             <input name="area_id" type="text" class="form-control" id="exampleFormControlInput1" value="{{$pharmacy->area_id}}" >
         </div>
+        @endrole
 
         <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label"><strong>Image</strong></label>

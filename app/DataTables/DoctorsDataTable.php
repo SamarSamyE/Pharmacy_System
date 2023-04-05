@@ -77,9 +77,13 @@ class DoctorsDataTable extends DataTable
         if (auth()->user()->hasRole('pharmacy')) {
             $query = Doctor::query()->where('pharmacy_id', auth()->user()->typeable->id);
         }
+        else if(auth()->user()->hasRole('doctor')){
+            $query = Doctor::query()->where('id', auth()->user()->typeable->id);
+        }
         else if(auth()->user()->hasRole('admin')){
             $query = Doctor::query();
         }
+
         return $query;
     }
 

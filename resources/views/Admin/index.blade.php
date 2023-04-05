@@ -109,6 +109,26 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
         <li class="nav-header">Pages</li>
+        @role('doctor')
+        <li class="nav-item">
+            <a href="{{ route('doctors.index')}}" class="nav-link">
+              <i class="nav-icon far fa-solid fa-hospital"></i>
+              <p>
+                Profile
+              </p>
+            </a>
+          </li>
+        @endrole
+        @role('pharmacy')
+        <li class="nav-item">
+            <a href="{{ route('pharmacies.index')}}" class="nav-link">
+              <i class="nav-icon far fa-solid fa-hospital"></i>
+              <p>
+                Profile
+              </p>
+            </a>
+          </li>
+        @endrole
         @role('admin')
           <li class="nav-item">
             <a href="{{ route('pharmacies.index')}}" class="nav-link">

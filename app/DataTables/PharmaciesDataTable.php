@@ -55,6 +55,7 @@ class PharmaciesDataTable extends DataTable
                             Edit
                         </a>
                     </div>
+                    
                     <div>
                         <a  href="javascript:void(0)"  id="delete-user"data-url="{{ route("pharmacies.destroy",$id)}}"
                             class="btn btn-danger">Delete
@@ -75,7 +76,13 @@ class PharmaciesDataTable extends DataTable
      */
     public function query(Pharmacy $model): QueryBuilder
     {
-        return $model->newQuery();
+        if (auth()->user()->hasRole('pharmacy')) {
+            $query = Pharmacy::query()->where('id', auth()->user()->typeable->id);
+        }
+        else if(auth()->user()->hasRole('admin')){
+            $query = Pharmacy::query();
+        }
+        return $query;
     }
 
 
@@ -116,7 +123,7 @@ class PharmaciesDataTable extends DataTable
         return [
 
                     Column::computed('avatar')->addClass('text-center')->title('Avatar'),
-                    Column::make('id')->addClass('text-center')->title('ID'),
+                    Column::make('id')->addClass('text-center')->title('ID')->visible(auth()->user()->hasRole("admin")),
                     Column::computed('Pharmacy Name')->addClass('text-center')->searchable(),
                     Column::computed('Owner Email')->addClass('text-center'),
                     Column::computed('Area')->addClass('text-center'),

@@ -7,8 +7,10 @@
             <div class="card-header">Manage Users</div>
             <div class="card-body">
             <div class="text-center">
+                @role('admin')
         <a href="{{route('pharmacies.create')}}" class="mt-4 btn btn-success fs-4">Create Pharmacy</a>
         <a href="{{route('pharmacies.showTrashed')}}" class="mt-4 btn btn-success fs-4">Show Trashed</a>
+                @endrole
          </div>
                 {{ $dataTable->table() }}
             </div>
