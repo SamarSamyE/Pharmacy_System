@@ -26,21 +26,22 @@ class AreasDataTable extends DataTable
             'actions',
             '
             <div class="d-flex flex-row justify-content-center" >
-                 <div class="d-flex flex-row gap-2">
-                 <div>
-                        <a  class="btn btn-success rounded" id="{{$id}}" href="{{Route("areas.edit",$id)}}">
-                            Edit
-                        </a>
-                     </div>
-                     <div>
-                        <a class="btn btn-primary rounded" href="{{Route("areas.show",$id)}}" >
-                            Show
-                        </a>
-                    </div>
-                    <div>
-                    <a  href="javascript:void(0)" id="delete-user" data-url="{{ route("areas.destroy",$id)}}"
-                    class="btn btn-danger">Delete</a>
-                    </div>
+                <div class="d-flex flex-row gap-2">
+                <div>
+                    <a class="btn btn-success rounded" href="{{Route("areas.show",$id)}}" >
+                        Show
+                    </a>
+                </div>
+                <div>
+                    <a class="btn btn-primary rounded" id="{{$id}}" href="{{Route("areas.edit",$id)}}">
+                        Edit
+                    </a>
+                </div>
+                <div>
+                    <a href="javascript:void(0)" id="delete-user" data-url="{{ route("areas.destroy",$id)}}" class="btn btn-danger">
+                        Delete
+                    </a>
+                </div>
                 </div>
             </div>'
         )

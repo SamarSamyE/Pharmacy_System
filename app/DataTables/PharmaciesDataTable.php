@@ -38,29 +38,30 @@ class PharmaciesDataTable extends DataTable
                 return $pharmacy->type->email;
             })
             ->addColumn('avatar',function(Pharmacy $pharmacy){
-                return '<img src="'. asset("storage/".$pharmacy->type->avatar) .'" width="40" class="img-circle" align="center" />';
+                return '<img src="'. asset("storage/".$pharmacy->type->avatar) .'" width="40" height="40px" class="rounded-5" align="center" />';
             })
             ->addColumn(
                 'actions',
-                '
-                <div class="d-flex flex-row justify-content-center" >
-                     <div class="d-flex flex-row gap-2">
-                     <div>
-                            <a  class="btn btn-success rounded" id="{{$id}}" href="{{Route("pharmacies.edit",$id)}}">
-                                Edit
-                             </a>
-                         </div>
-                         <div>
-                            <a class="btn btn-primary rounded" href="{{Route("pharmacies.show",$id)}}" >
-                                Show
-                            </a>
-                        </div>
-                        <div>
-                        <a  href="javascript:void(0)"  id="delete-user"data-url="{{ route("pharmacies.destroy",$id)}}"
-                        class="btn btn-danger">Delete</a>
-                        </div>
+                    '
+                    <div class="d-flex flex-row justify-content-center" >
+                    <div class="d-flex flex-row gap-2">
+                    <div>
+                        <a class="btn btn-success rounded" href="{{Route("pharmacies.show",$id)}}" >
+                            Show
+                        </a>
                     </div>
-                </div>'
+                    <div>
+                        <a class="btn btn-primary rounded" id="{{$id}}" href="{{Route("pharmacies.edit",$id)}}">
+                            Edit
+                        </a>
+                    </div>
+                    <div>
+                        <a  href="javascript:void(0)"  id="delete-user"data-url="{{ route("pharmacies.destroy",$id)}}"
+                            class="btn btn-danger">Delete
+                        </a>
+                    </div>
+                    </div>
+                    </div>'
             )
             ->rawColumns(['avatar', 'actions','restore'])
             ->setRowId('pharmacy_id');
@@ -102,7 +103,7 @@ class PharmaciesDataTable extends DataTable
                 Button::make('reset'),
                 Button::make('reload')
             ]);
-      
+
     }
 
     /**

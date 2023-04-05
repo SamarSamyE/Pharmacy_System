@@ -56,3 +56,10 @@ class RoleSeeder extends Seeder
         ])->assignRole('admin');
     }
 }
+/////////////////////////////////
+// if(auth()->user()->can('manage-doctors'){
+//     //this means that the auth user is an admin
+//     elseif(auth()->user()->can('manage-own-doctors')){
+//     //this means that it's not an admin and that it is a pharmacy
+//     }
+//     })
