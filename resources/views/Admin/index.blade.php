@@ -44,6 +44,33 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="index3.html" class="nav-link">Home</a>
       </li>
+      <ul class="navbar-nav ms-auto ">
+                    <!-- Authentication Links -->
+                    @guest
+                    @if (Route::has('login'))
+                      <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">{{ ('Login') }}</a>
+                      </li>
+                    @endif
+                    @else
+                    <li class="nav-item dropdown">
+                      <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                          {{ Auth::user()->name }}
+                      </a>
+
+                      <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                          <a class="dropdown-item" href="{{ route('login') }}" onclick="event.preventDefault();
+                               document.getElementById('logout-form').submit();">
+                                  {{ ('Logout') }}
+                          </a>
+
+                          <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                              @csrf
+                          </form>
+                      </div>
+                        </li>
+                        @endguest
+                </ul>
       </ul>
 
     <!-- Right navbar links -->
@@ -63,6 +90,7 @@
     </a>
 
     <!-- Sidebar -->
+
     <div class="sidebar">
       <!-- SidebarSearch Form -->
       <div class="form-inline">
@@ -80,7 +108,28 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-                   <li class="nav-header">Pages</li>
+        <li class="nav-header">Pages</li>
+        @role('doctor')
+        <li class="nav-item">
+            <a href="{{ route('doctors.index')}}" class="nav-link">
+              <i class="nav-icon far fa-solid fa-hospital"></i>
+              <p>
+                Profile
+              </p>
+            </a>
+          </li>
+        @endrole
+        @role('pharmacy')
+        <li class="nav-item">
+            <a href="{{ route('pharmacies.index')}}" class="nav-link">
+              <i class="nav-icon far fa-solid fa-hospital"></i>
+              <p>
+                Profile
+              </p>
+            </a>
+          </li>
+        @endrole
+        @role('admin')
           <li class="nav-item">
             <a href="{{ route('pharmacies.index')}}" class="nav-link">
               <i class="nav-icon far fa-solid fa-hospital"></i>
@@ -89,6 +138,33 @@
               </p>
             </a>
           </li>
+
+          <li class="nav-item">
+            <a href="{{route('patients.index')}}" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Users
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('areas.index')}}" class="nav-link">
+              <i class="nav-icon fas ion-ios-location"></i>
+              <p>
+                Areas
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{route('patientsAddress.index') }}" class="nav-link">
+              <i class="nav-icon fas ion-ios-location"></i>
+              <p>
+                Users Addresses
+              </p>
+            </a>
+          </li>
+          @endrole
+          @hasanyrole("admin|pharmacy")
           <li class="nav-item">
             <a href="{{ route('doctors.index')}}" class="nav-link">
               <i class="nav-icon far fa-user"></i>
@@ -98,31 +174,17 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/kanban.html" class="nav-link">
-              <i class="nav-icon fas fa-user"></i>
+            <a href="{{ route('revenues.index')}}" class="nav-link">
+              <i class="nav-icon fas ion-social-usd-outline"></i>
               <p>
-                Users
+                Revenue
               </p>
             </a>
           </li>
+          @endrole
+          @hasanyrole("admin|pharmacy|doctor")
           <li class="nav-item">
-            <a href="pages/kanban.html" class="nav-link">
-              <i class="nav-icon fas ion-ios-location"></i>
-              <p>
-                Areas
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="pages/kanban.html" class="nav-link">
-              <i class="nav-icon fas ion-ios-location"></i>
-              <p>
-                Users Addresses
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="pages/kanban.html" class="nav-link">
+            <a href="{{ route('medicines.index')}}" class="nav-link">
               <i class="nav-icon fas fa-pills"></i>
               <p>
                 Medicines
@@ -137,14 +199,7 @@
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="pages/kanban.html" class="nav-link">
-              <i class="nav-icon fas ion-social-usd-outline"></i>
-              <p>
-                Revenue
-              </p>
-            </a>
-          </li>
+          @endrole
                    <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                <li class="nav-item">
@@ -196,7 +251,16 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard</h1>
+            @role('admin')
+            <h1 class="m-0">You logged in as an Admin </h1>
+            @endrole
+            @role('pharmacy')
+            <h1 class="m-0">You logged in as an Pharmacy </h1>
+            @endrole
+            @role('doctor')
+            <h1 class="m-0">You logged in as as Doctor </h1>
+            @endrole
+
           </div><!-- /.col -->
 
         </div><!-- /.row -->
@@ -209,50 +273,62 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-          <div class="col-lg-4 col-6">
+            @role('admin')
+          <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-info">
+            <div class="small-box bg-info" style="height: 150px">
               <div class="inner">
-                <h3>150</h3>
-
                 <p>New Pharmacy</p>
               </div>
               <div class="icon">
               <i class="ion ion-medkit"></i>
           </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+
             </div>
           </div>
-          <!-- ./col -->
-          <div class="col-lg-4 col-6">
-            <!-- small box -->
-            <div class="small-box bg-success">
-              <div class="inner">
-                <h3>53</h3>
 
-                <p>New Doctor</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-person-add"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
           <!-- ./col -->
-          <div class="col-lg-4 col-6">
+          <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-warning">
+            <div class="small-box bg-warning" style="height: 150px">
               <div class="inner">
-                <h3>44</h3>
-
-                <p>New Area</p>
+                    <p>New Area</p>
               </div>
               <div class="icon">
                 <i class="ion ion-location"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+
             </div>
           </div>
+          @endrole
+          @hasanyrole("admin|pharmacy")
+          <div class="col-lg-3 col-6" >
+            <!-- small box -->
+            <div class="small-box bg-success" style="height: 150px">
+              <div class="inner">
+                    <p>New Doctor</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-person-add"></i>
+              </div>
+            </div>
+          </div>
+          @endrole
+          @hasanyrole("admin|pharmacy|doctor")
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div  style="height: 150px" class="small-box bg-danger ">
+              <div class="inner">
+                <p>New Medicine</p>
+              </div>
+              <div class="icon">
+              <i class="nav-icon fas fa-pills"></i>
+          </div>
+            </div>
+          </div>
+          @endrole
+          <!-- ./col -->
+
            <!-- ./col -->
         </div>
 
@@ -293,6 +369,7 @@
 <script src="dist/js/adminlte.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
 </body>

@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('avatar')->nullable();
 
             $table->string('typeable_type')->nullable();
-            // we will discuss it
+
             $table->integer('typeable_id')->unsigned()->nullable();
             // // this is using index
             // $table->index(['role_type', 'role_id']);

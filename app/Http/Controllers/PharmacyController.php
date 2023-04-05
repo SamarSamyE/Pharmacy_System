@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\PharmaciesDataTable;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\Doctor;
 use App\Models\Pharmacy;
@@ -13,10 +14,9 @@ use Illuminate\Support\Facades\Storage;
 class PharmacyController extends Controller
 {
 
-    public function index()
+    public function index(PharmaciesDataTable $dataTable)
     {
-        $allpharmacies =Pharmacy::all();
-        return view('Admin.pharmacies', ['pharmacies' => $allpharmacies]);
+        return $dataTable->render('Admin.pharmacies');
     }
 
     public function show($id)
@@ -38,8 +38,15 @@ class PharmacyController extends Controller
     {
         $pharmacy = Pharmacy::find($id);
         $user = User::find($pharmacy->type->id);
-        $pharmacy->priority = $request->input('priority');
-        $pharmacy->area_id = $request->input('area_id');
+if (auth()->user()->hasRole('admin')) {
+    $pharmacy->priority = $request->input('priority');
+    $pharmacy->area_id = $request->input('area_id');
+}
+else if(auth()->user()->hasRole('pharmacy')){
+    $pharmacy->priority = auth()->user()->typeable->priority;
+    $pharmacy->area_id = auth()->user()->typeable->area_id;
+
+}
         $pharmacy->national_id = $request->input('national_id');
         $pharmacy->save();
 
@@ -65,7 +72,7 @@ class PharmacyController extends Controller
 
     public function store(StoreUserRequest $request)
     {
-        $pharmacy=new Pharmacy();
+
         $user = new User([
         'name'=>$request->input('name'),
         'email'=>$request->input('email'),
@@ -95,7 +102,8 @@ class PharmacyController extends Controller
         $user = User::findOrFail($pharmacy->type->id);
         $pharmacy->delete();
         $user->delete();
-        return redirect()->route('pharmacies.index');
+        return response()->json(['success'=>'User Deleted Successfully!']);
+        // return redirect()->route('pharmacies.index');
     }
 
     public function showTrashed(){
