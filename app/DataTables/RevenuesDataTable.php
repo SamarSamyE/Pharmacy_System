@@ -89,7 +89,7 @@ class RevenuesDataTable extends DataTable
     {
         return [
             Column::computed('Pharmacy Avatar')->addClass('text-center')->title('Avatar'),
-            Column::computed('Pharmacy Name')->addClass('text-center'),
+            Column::computed('Pharmacy Name')->addClass('text-center')->visible(auth()->user()->hasRole("admin")),
             Column::computed('totalOrders')->addClass('text-center'),
             Column::computed('totalRevenue')->addClass('text-center'),
         ];

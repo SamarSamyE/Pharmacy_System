@@ -55,7 +55,12 @@ public function update(Request $request, $id)
     $doctor = Doctor::find($id);
     $user = User::find($doctor->type->id);
 
-    $doctor->pharmacy_id = $request->input('pharmacy_id');
+    if (auth()->user()->hasRole('pharmacy')) {
+        $doctor->pharmacy_id= auth()->user()->typeable->id;
+    }
+    if (auth()->user()->hasRole('admin')) {
+        $doctor->pharmacy_id= $request->input('pharmacy_id');
+    }
     $doctor->national_id = $request->input('national_id');
     $doctor->save();
 
@@ -96,12 +101,18 @@ public function update(Request $request, $id)
     $avatar->storeAs('public',$filename);
     $user->avatar= $filename;
   }
-  $doctor=new Doctor([
-    'national_id' => $request->input('national_id'),
-    'pharmacy_id' => $request->input('pharmacy_id')
 
+  $doctor=new Doctor([
+
+    'national_id' => $request->input('national_id'),
 
   ]);
+  if (auth()->user()->hasRole('pharmacy')) {
+    $doctor->pharmacy_id= auth()->user()->typeable->id;
+}
+if (auth()->user()->hasRole('admin')) {
+    $doctor->pharmacy_id= $request->input('pharmacy_id');
+}
 
   $doctor->save();
   $user->typeable()->associate($doctor);
