@@ -43,7 +43,9 @@ class Order extends Model
         return $this->hasMany(OrderImage::class);
     }
 
-    
+    // public function medicineOrder(){
+    //     return $this->belongsToMany(MedicineOrder::class);
+    // }
 
     public static function totalPrice( $quantity ,$MedicineOreder){
         $totalPrice = 0;

@@ -13,7 +13,6 @@ use App\Models\Pharmacy;
 use App\Models\Order;
 use App\Models\PatientAddress;
 
-
 class OrderController extends Controller
 {
     /**
@@ -100,9 +99,18 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(string $id)
     {
-        //
+    
+        $order = Order::find($id);
+        //dd($order->medicineOrder->medicine_id);
+        $medicineorder = MedicineOrder::where('order_id',$order->id)->first();
+        $medicine = Medicine::where('id',$medicineorder->medicine_id)->first();
+        //dd($medicine);
+        // dd($order);
+        //dd($medicineorder);
+
+        return view('orders.show',['order'=>$order,'medicine'=>$medicine]);
     }
 
     /**
@@ -119,9 +127,35 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function edit($id)
+     {
+      
+        $order = Order::find($id);
+        // dd($order->id);
+        $users = User::all();
+        // dd($patients);  
+        $doctors = Doctor::all();
+        //dd($doctors);
+        $pharmacy = Pharmacy::all();
+        return view('Orders.edit', ['order' => $order, 'users' => $users, 'pharmacy' => $pharmacy, 'doctors' => $doctors]);
+     }
+
+    public function update(Request $request,$id)
     {
-        //
+        //dd($id);
+        $order = Order::find($id);
+        //dd($order);
+        $order->update([
+            'pharmacy_id' => $request->pharmacy_id,
+            'doctor_id' => $request->doctor_id,
+            'status' => $request->status,
+            'is_insured' => $request->has('is_insured') ? 1 : 0,
+            'price'=>$order->price,
+            'patient_id'=>$order->patient_id,
+            'patient_address_id'=>$order->patient_address_id
+            
+        ]);
+        return redirect()->route('Orders.index');
     }
 
     /**

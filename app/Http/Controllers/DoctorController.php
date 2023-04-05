@@ -90,5 +90,7 @@ public function update(StoreUserRequest $request, $id)
     $pharmacy->delete();
     return redirect()->route('pharmacies.index');
   }
+
+
 }
 

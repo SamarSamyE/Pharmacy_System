@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 
 use App\Http\Requests\StoreUserRequest;
@@ -132,5 +133,24 @@ public function update(Request $request, $id)
 
 
   }
+
+
+  
+public function ban(Request $request)
+{
+//   dd($request);
+    $id = $request->id;
+    $doctor = Doctor::find($id);
+    // dd($id);
+    $banned = $doctor->ban();
+    return redirect()->route('Doctors.index')->with('banned', $banned);
+}
+public function unban(Request $request)
+    {
+        $id = $request->id;
+        $doctor = Doctor::find($id);
+        $unbanned = $doctor->unban();
+        return redirect()->route('Doctors.index')->with('banned', $unbanned);
+    }
 
 }

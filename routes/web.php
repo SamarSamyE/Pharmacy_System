@@ -7,6 +7,7 @@ use App\Http\Controllers\PharmacyOwnerController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MedicineController;
+use App\Http\Middleware\BanMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,9 +41,8 @@ Route::get('/doctor', function () {
     return view('Doctor/index');
 })->middleware(['auth','role:doctor'])->name('doctor.index');
 
-// Route::get('/pharmacy', function () {
-//     return view('Pharmacy/index');
-// })->middleware(['auth','role:pharmacy'])->name('pharmacy.index');
+
+
 
 
 
@@ -66,8 +66,10 @@ Route::get('/pharmacy', function () {
     Route::get('pharmacy/Medicines/edit/{Medicine}', [MedicineController::class, 'edit'])->name('Medicines.edit');
     Route::put('/pharmacy/Medicines/{id}', [MedicineController::class, 'update'])->name('Medicines.update');
     Route::delete('pharmacy/Medicines/{id}', [MedicineController::class, 'destroy'])->name('Medicines.destroy');
-    
 
+
+    Route::post('/bans', [PharmacyOwnerController::class, 'ban'])->name('doctor.ban');
+    Route::post('/unbans', [PharmacyOwnerController::class, 'unban'])->name('doctor.unban');
 
 
 
@@ -82,9 +84,10 @@ Route::get('/patient', function () {
 Route::group(['name' => 'Orders','prefix' => 'Orders','middleware' =>['role: admin|pharmacy|doctor', 'auth']],function(){
     Route::get('/', [OrderController::class, 'index'])->name('Orders.index');
     Route::get('/create',[OrderController::class, 'create'])->name('Orders.create');
-    Route::get('/edit',[OrderController::class, 'edit'])->name('Orders.edit');
+    Route::get('/edit/{Order}',[OrderController::class, 'edit'])->name('Orders.edit');
+    Route::get('/show/{id}',[OrderController::class, 'show'])->name('Orders.show');
     Route::post('/', [OrderController::class, 'store'])->name('Orders.store');
-
+    Route::put('/update/{orders}', [OrderController::class, 'update'])->name('Orders.update');
 });
 
 Auth::routes();

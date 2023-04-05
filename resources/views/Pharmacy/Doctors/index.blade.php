@@ -32,12 +32,21 @@
             <td>{{$doc->type->name}}</td>
                 <td>{{$doc->national_id}}</td>
                 <td>{{$doc->pharmacy_id}}</td>
+                
                <td>
-                @if($doc->is_banned==false)
-              <label class="py-2 px-3 btn-primary badge">Not banned</label>
-                @elseif($doc->is_banned==true)
-                <label class="py-2 px-3 btn-primary badge"> banned</label>
-                @endif
+              
+               <form method="post" action="{{route('doctor.ban')}}" class="d-inline">
+    @csrf
+    <input type="hidden" name="id" value="{{$doc->type->typeable_id }}" />
+    <button type="submit" title="Ban" name="ban" class="form-button">ban</button>
+</form>
+
+<form method="post" action="{{route('doctor.unban')}}" class="d-inline">
+    @csrf
+    <input type="hidden" name="id" value="{{ $doc->type->typeable_id}}" />
+    <button type="submit" title="UnBan" name="unban" class="form-button">unban</button>
+</form>
+              
 </td>
 
 
