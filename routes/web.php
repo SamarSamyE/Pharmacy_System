@@ -66,6 +66,7 @@ Route::group(['middleware' =>['auth']],function(){
     Route::get('doctors/{doctor}', [DoctorController::class, 'show'])->name('doctors.show');
     Route::get('/areas/{area}', [AreaController::class, 'show'])->name('areas.show');
     Route::get('/medicines/{area}', [MedicineController::class, 'show'])->name('medicines.show');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 
 
 

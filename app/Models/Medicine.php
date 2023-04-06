@@ -22,4 +22,8 @@ class Medicine extends Model
     public function orders(){
         return $this->belongsToMany(Order::class);
     }
+
+    public function medicineOrder(){
+        return $this->belongsToMany(MedicineOrder::class);
+    }
 }

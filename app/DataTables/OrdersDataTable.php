@@ -34,7 +34,7 @@ class OrdersDataTable extends DataTable
                          </a>
                      </div>
                      <div>
-                        <a class="btn btn-primary rounded" href="{{Route("pharmacies.show",$id)}}" >
+                        <a class="btn btn-primary rounded" href="{{Route("orders.show",$id)}}" >
                             Show
                         </a>
                     </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DataTables\PharmaciesDataTable;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\Doctor;
+use App\Models\PatientAddress;
 use App\Models\Pharmacy;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -72,7 +73,7 @@ else if(auth()->user()->hasRole('pharmacy')){
 
     public function store(StoreUserRequest $request)
     {
-
+        
         $user = new User([
         'name'=>$request->input('name'),
         'email'=>$request->input('email'),

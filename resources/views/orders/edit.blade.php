@@ -77,11 +77,6 @@
 
 
                   </div>
-        <!-- /.card-body -->
-
-
-                <button style="margin-left:30px ;width:150px"  type="submit" class="btn btn-success ">Create</button>
-        </form>
     </div>
 
     </div>

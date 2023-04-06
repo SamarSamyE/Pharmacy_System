@@ -38,4 +38,15 @@ class Order extends Model
     public function image(){
         return $this->hasOne(OrderImage::class);
     }
+
+    public function medicineOrder(){
+        return $this->hasOne(MedicineOrder::class);
+    }
+    public static function totalPrice( $quantity ,$MedicineOreder){
+        $totalPrice = 0;
+        $price = Medicine::where('id',$MedicineOreder)->first()->price;
+            $totalPrice += $price * $quantity;
+
+        return $totalPrice;
+    }
 }

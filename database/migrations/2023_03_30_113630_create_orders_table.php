@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->boolean('is_insured');
+            $table->boolean('is_insured')->default(false);
             $table->string('status');
             $table->enum('creator_type',['admin','patient']);
             $table->integer('pharmacy_id')->nullable();

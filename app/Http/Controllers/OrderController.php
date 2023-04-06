@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\OrdersDataTable;
+use App\Models\Doctor;
 use App\Models\Medicine;
+use App\Models\MedicineOrder;
 use App\Models\Order;
 use App\Models\OrderImage;
 use App\Models\Patient;
 use App\Models\PatientAddress;
+use App\Models\Pharmacy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,49 +22,63 @@ class OrderController extends Controller
 
 
    public function create(){
-    $addresses=PatientAddress::all();
-    return view('orders.create',compact('addresses'));
+    $patients = Patient::all();
+    $doctors = Doctor::all();
+    $medicines = Medicine::all();
+    $pharmacies = Pharmacy::all();
+    // dd($pharmacy);
+    return view('Orders.create',['patients'=>$patients , 'medicines'=>$medicines , 'pharmacies'=>$pharmacies , 'doctors'=>$doctors]);
    }
 
 
 
 
    public function store(Request $request){
-    $order = new Order();
+   $order =new Order();
+    $patient_address_id= PatientAddress::where('id',$request->patient_id)->first()->id;
+    $order->patient_id=$request->input('patient_id');
+    $order->pharmacy_id=$request->input('pharmacy_id');
+    $order->doctor_id=$request->input('doctor_id');
+    $order->patient_id=$request->input('patient_id');
+    $order->patient_address_id=$patient_address_id;
+    $order->is_insured=$request->input('is_insured');
+    $order->price=0;
 
-    $order->is_insured = request()->radio;
-    $order->status = 'new';
-    $order->patient_address_id = request()->patient_address_id;
-    $order->patient_id =auth()->user()->id;
-    $order->price= 0;
-     //if admin
-    if (auth()->user()->hasRole('admin')) {
-        $order->creator_type = 'admin';
-        //if patient
-    } else if(auth()->user()->hasRole('patient')){
-        $order->creator_type = 'patient';
-    }
-    $order->save();
-
-    $Prescriptions = $request->file("avatar");
-    $paths = [];
-    if ($Prescriptions) {
-        foreach ($Prescriptions as $Prescription) {
-            $paths[] =
-             Storage::putFileAs(
-                'public/prescriptions',
-                 $Prescription,
-                  $Prescription->getClientOriginalName()
-            );
+        if (auth()->user()->hasRole('admin')){
+            $order->creator_type = 'admin';
         }
-    }
-    $serializedPaths = serialize($paths);
-        OrderImage::create([
-            'order_id' => $order->id,
-            'image' => $serializedPaths
-        ]);
+        if (auth()->user()->hasRole('pharmacy')){
+            $order->creator_type = 'pharmacy';
+        }
+        if (auth()->user()->hasRole('doctor')){
+            $order->creator_type = 'doctor';
+        }
+        if (auth()->user()->hasRole('patient')){
+            $order->creator_type = 'patient';
+        }
 
-        return to_route("orders.index");
+        $medicineOrder= new MedicineOrder();
+        $medicineOrder->quantity=$request->input('quantity');
+        $medicineOrder->medicine_id=$request->medicine_id;
+
+        $order->price = Order::totalPrice($request->quantity, $request->medicine_id);
+        $order->status="new";
+        $order->save();
+
+        $medicineOrder->order()->associate($order);
+        $medicineOrder->save();
+        return to_route('orders.index');
+   }
+
+
+
+
+   public function show($id){
+        $order = Order::where('id', $id)->first();
+        $medicineOrder=MedicineOrder::where('order_id',$id)->first();
+        $medicine= Medicine::where('id',$medicineOrder->medicine_id)->first();
+
+        return view('orders.show',compact('medicineOrder','order','medicine'));
    }
 
 
@@ -78,37 +95,6 @@ class OrderController extends Controller
 
    public function update(Request $request, $id)
    {
-       $pharmacy = Order::find($id);
-//        $user = User::find($pharmacy->type->id);
-// if (auth()->user()->hasRole('admin')) {
-//    $pharmacy->priority = $request->input('priority');
-//    $pharmacy->area_id = $request->input('area_id');
-// }
-// else if(auth()->user()->hasRole('pharmacy')){
-//    $pharmacy->priority = auth()->user()->typeable->priority;
-//    $pharmacy->area_id = auth()->user()->typeable->area_id;
-
-// }
-//        $pharmacy->national_id = $request->input('national_id');
-//        $pharmacy->save();
-
-//        $user->name = $request->input('name');
-//        $user->email = $request->input('email');
-//        if ($request->input('password')) {
-//            $user->password = bcrypt($request->input('password'));
-//        }
-//        if ($request->hasFile('avatar')) {
-//            if ($pharmacy->type->avatar) {
-//                $avatarPath=$pharmacy->type->avatar;
-//                Storage::delete('public/'.$avatarPath);
-//            }
-//            $avatar = $request->file('avatar');
-//            $filename = time() . '.' . $avatar->getClientOriginalExtension();
-//            $avatar->storeAs('public', $filename);
-//            $user->avatar = $filename;
-//        }
-//        $user->save();
-
        return redirect()->route('pharmacies.index');
    }
 
@@ -119,7 +105,7 @@ class OrderController extends Controller
     dd($request);
     $order = Order::findOrFail($id);
     $orderImage= OrderImage::findOrFail($order->image->id);
-      // $orderImage= OrderImage::findOrFail($order->image->id);
+
     $order->delete();
     $orderImage->delete();
     return response()->json(['success'=>'User Deleted Successfully!']);
