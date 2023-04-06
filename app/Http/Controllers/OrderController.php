@@ -83,13 +83,21 @@ class OrderController extends Controller
 
 
 
-   public function edit($id)
-   {
-       $order= Order::find($id);
-       $addresses=PatientAddress::all();
-       $medicine=Medicine::all();
-       $patients=Patient::all();
-       return view('orders.edit', compact(['order','addresses','medicine','patients']));
+   public function edit($id){
+        $order= Order::findOrFail($id);
+        $addresses=PatientAddress::all();
+        $medicines=Medicine::all();
+        $patients=Patient::all();
+        $PastPatient=Patient::find($order->patient)->first()->type->name;
+        $pharmacies=Pharmacy::all();
+        $PastPharmacy=Pharmacy::where('id',$order->pharmacy_id)->first();
+        $PastDoctor=Doctor::where('id',$order->doctor_id)->first();
+        $medicineOrder=MedicineOrder::where('order_id',$id)->first();
+        $pastMedicine= Medicine::where('id',$medicineOrder->medicine_id)->first();
+        // dd($medicine);
+
+        $doctors=Doctor::all();
+        return view('orders.edit', compact(['order','addresses','medicines','patients','pharmacies','doctors','PastPatient','pastMedicine','PastPharmacy','PastDoctor']));
    }
 
 
