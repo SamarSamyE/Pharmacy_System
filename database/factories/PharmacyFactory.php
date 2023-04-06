@@ -18,13 +18,9 @@ class PharmacyFactory extends Factory
     public function definition(): array
     {
         return [
-            //
-              // 'id' => $faker->unique($reset = true)->buildingNumber,
-              'national_id' => fake()->unique()->randomNumber(8,true),
-              'area_id' => fake()->numberBetween($min = 1, $max = 5),
-              'priority' => fake()->numberBetween($min = 1, $max = 3),
-
-
+            'national_id' => fake()->unique()->randomNumber(8,true),
+            'area_id' => fake()->numberBetween($min = 1, $max = 5),
+            'priority' => fake()->numberBetween($min = 1, $max = 3),
         ];
     }
 }
