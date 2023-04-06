@@ -38,7 +38,7 @@ class AreasDataTable extends DataTable
                     </a>
                 </div>
                 <div>
-                    <a href="javascript:void(0)" id="delete-user" data-url="{{ route("areas.destroy",$id)}}" class="btn btn-danger">
+                    <a href="javascript:void(0)" id="delete-area" data-url="{{ route("areas.destroy",$id)}}" class="btn btn-danger">
                         Delete
                     </a>
                 </div>

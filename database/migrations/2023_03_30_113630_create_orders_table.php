@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->boolean('is_insured');
             $table->string('status');
-            $table->integer('creator_id');
+            $table->enum('creator_type',['admin','patient']);
             $table->integer('pharmacy_id')->nullable();
             $table->integer('doctor_id')->nullable();
             $table->integer('patient_id');

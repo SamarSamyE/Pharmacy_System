@@ -21,10 +21,10 @@ class MedicineController extends Controller
 
     public function show($id)
     {
-        
+
         $medicine = Medicine::where('id', $id)->first();
         return view('medicines.show', ['medicine' => $medicine]);
-       
+
 
     }
 
@@ -37,36 +37,36 @@ class MedicineController extends Controller
     }
 
     public function edit($id)//when i click on edit so to go to that post im clicking on ive to send id of that post
-    
+
     {
         $medicine = Medicine::find($id);
-      
+
         return view('medicines.edit', compact('medicine'));
     }
     public function update(Request $request, $id)
     {
         $medicine = Medicine::find($id);
-        
-      
+
+
         $medicine->id = $request->input('id');
         $medicine->type = $request->input('type');
         $medicine->name = $request->input('name');
         $medicine->price = $request->input('price');
         $medicine->quantity = $request->input('quantity');
         $medicine->save();
-    
-       // put here order medicine after we add relation on it 
-    
+
+       // put here order medicine after we add relation on it
+
         return redirect()->route('medicines.index');
-    
-    
-    
+
+
+
     }
-    
+
 
     public function store(Request $request)
     {
-       
+
         $medicine=new Medicine([
             // 'id' =>  $request->input('id'),
             'type' => $request->input('type'),
@@ -87,14 +87,10 @@ class MedicineController extends Controller
 
     public function destroy(Request $request, $id)
     {
-       
-    
-            $medicine = Medicine::findOrFail($id);//is the id exists or not
-            $medicine->delete();
-            return redirect()->route('medicines.index');
-    
-    
-      }
-    
+        $medicine = Medicine::findOrFail($id);//is the id exists or not
+        $medicine->delete();
+        return redirect()->route('medicines.index');
+    }
+
       //
 }

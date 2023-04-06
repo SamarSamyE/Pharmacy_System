@@ -55,9 +55,9 @@ class PharmaciesDataTable extends DataTable
                             Edit
                         </a>
                     </div>
-                    
+
                     <div>
-                        <a  href="javascript:void(0)"  id="delete-user"data-url="{{ route("pharmacies.destroy",$id)}}"
+                        <a  href="javascript:void(0)"  id="delete-user" data-url="{{ route("pharmacies.destroy",$id)}}"
                             class="btn btn-danger">Delete
                         </a>
                     </div>

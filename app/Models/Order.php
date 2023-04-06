@@ -36,6 +36,6 @@ class Order extends Model
     }
 
     public function image(){
-        return $this->hasMany(OrderImage::class);
+        return $this->hasOne(OrderImage::class);
     }
 }

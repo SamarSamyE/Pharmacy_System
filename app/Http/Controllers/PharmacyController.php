@@ -79,7 +79,6 @@ else if(auth()->user()->hasRole('pharmacy')){
         'password'=>$request->input('password'),
         ]);
         if ($request->hasFile('avatar')) {
-
             $avatar =$request->file('avatar');
             $filename = time() . '.' . $avatar->getClientOriginalExtension();
             $avatar->storeAs('public', $filename);

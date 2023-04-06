@@ -50,7 +50,6 @@ class RevenuesDataTable extends DataTable
      */
     public function query(Pharmacy $model): QueryBuilder
     {
-        $user=auth()->user();
         if (auth()->user()->hasRole('pharmacy')) {
             $query = Pharmacy::query()->where('id', auth()->user()->typeable->id);
         }
