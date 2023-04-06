@@ -29,7 +29,7 @@
 
         <div class="mb-3">
         <label for="description" class="form-label">Delivery Address</label>
-        <select style="width:30%" name="patient_address_id" class="form-control">
+        <select style="width:30%" name="patient_address_id" class="form-control" >
           @foreach($addresses as $address)
               <option value="{{$address->id}}">{{$address->street_name}}</option>
           @endforeach

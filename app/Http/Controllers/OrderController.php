@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\OrdersDataTable;
+use App\Models\Medicine;
 use App\Models\Order;
 use App\Models\OrderImage;
+use App\Models\Patient;
 use App\Models\PatientAddress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -20,6 +22,8 @@ class OrderController extends Controller
     $addresses=PatientAddress::all();
     return view('orders.create',compact('addresses'));
    }
+
+
 
 
    public function store(Request $request){
@@ -59,6 +63,56 @@ class OrderController extends Controller
 
         return to_route("orders.index");
    }
+
+
+
+   public function edit($id)
+   {
+       $order= Order::find($id);
+       $addresses=PatientAddress::all();
+       $medicine=Medicine::all();
+       $patients=Patient::all();
+       return view('orders.edit', compact(['order','addresses','medicine','patients']));
+   }
+
+
+   public function update(Request $request, $id)
+   {
+       $pharmacy = Order::find($id);
+//        $user = User::find($pharmacy->type->id);
+// if (auth()->user()->hasRole('admin')) {
+//    $pharmacy->priority = $request->input('priority');
+//    $pharmacy->area_id = $request->input('area_id');
+// }
+// else if(auth()->user()->hasRole('pharmacy')){
+//    $pharmacy->priority = auth()->user()->typeable->priority;
+//    $pharmacy->area_id = auth()->user()->typeable->area_id;
+
+// }
+//        $pharmacy->national_id = $request->input('national_id');
+//        $pharmacy->save();
+
+//        $user->name = $request->input('name');
+//        $user->email = $request->input('email');
+//        if ($request->input('password')) {
+//            $user->password = bcrypt($request->input('password'));
+//        }
+//        if ($request->hasFile('avatar')) {
+//            if ($pharmacy->type->avatar) {
+//                $avatarPath=$pharmacy->type->avatar;
+//                Storage::delete('public/'.$avatarPath);
+//            }
+//            $avatar = $request->file('avatar');
+//            $filename = time() . '.' . $avatar->getClientOriginalExtension();
+//            $avatar->storeAs('public', $filename);
+//            $user->avatar = $filename;
+//        }
+//        $user->save();
+
+       return redirect()->route('pharmacies.index');
+   }
+
+
 
 
    public function destroy(Request $request, $id){

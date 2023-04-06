@@ -54,12 +54,13 @@ Route::group(['middleware' =>['auth']],function(){
     Route::get('/areas/{id}/edit', [AreaController::class, 'edit'])->name('areas.edit');
     Route::get('/doctors/{id}/edit', [DoctorController::class, 'edit'])->name('doctors.edit');
     Route::get('/medicines/{id}/edit', [MedicineController::class, 'edit'])->name('medicines.edit');
-
+    Route::get('/orders/{id}/edit', [OrderController::class, 'edit'])->name('orders.edit');
 
     Route::put('/pharmacies/{id}', [PharmacyController::class, 'update'])->name('pharmacies.update');
     Route::put('/doctors/{id}', [DoctorController::class, 'update'])->name('doctors.update');
     Route::put('/areas/{id}', [AreaController::class, 'update'])->name('areas.update');
     Route::put('/medicines/{id}', [MedicineController::class, 'update'])->name('medicines.update');
+    Route::put('/order/{id}', [OrderController::class, 'update'])->name('orders.update');
 
     Route::get('/pharmacies/{post}', [PharmacyController::class, 'show'])->name('pharmacies.show');
     Route::get('doctors/{doctor}', [DoctorController::class, 'show'])->name('doctors.show');

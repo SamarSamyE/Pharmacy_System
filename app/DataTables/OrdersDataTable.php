@@ -29,7 +29,7 @@ class OrdersDataTable extends DataTable
             <div class="d-flex flex-row justify-content-center" >
                  <div class="d-flex flex-row gap-2">
                  <div>
-                        <a  class="btn btn-success rounded" id="{{$id}}" href="{{Route("pharmacies.edit",$id)}}">
+                        <a class="btn btn-success rounded" id="{{$id}}" href="{{Route("orders.edit",$id)}}">
                             Edit
                          </a>
                      </div>
@@ -72,7 +72,17 @@ class OrdersDataTable extends DataTable
 
      public function query(Order $model): QueryBuilder
      {
-         return $model->newQuery();
+        if (auth()->user()->hasRole('pharmacy')) {
+            $query = Order::query()->where('pharmacy_id', auth()->user()->typeable->id);
+        }
+        else if(auth()->user()->hasRole('doctor')){
+            $query = Order::query()->where('pharmacy_id', auth()->user()->typeable->pharmacy_id);
+        }
+        else if(auth()->user()->hasRole('admin')){
+            $query = Order::query();
+        }
+
+        return $query;
      }
 
 
