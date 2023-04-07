@@ -62,7 +62,7 @@ class OrderController extends Controller
         $medicineOrder->medicine_id=$request->medicine_id;
 
         $order->price = Order::totalPrice($request->quantity, $request->medicine_id);
-        $order->status="new";
+        $order->status="progressing";
         $order->save();
 
         $medicineOrder->order()->associate($order);
@@ -103,19 +103,51 @@ class OrderController extends Controller
 
    public function update(Request $request, $id)
    {
-       return redirect()->route('pharmacies.index');
+
+    $order =Order::find($id);
+    $patient_address_id= PatientAddress::where('id',$request->patient_id)->first()->id;
+    $order->patient_id=$request->input('patient_id');
+    $order->pharmacy_id=$request->input('pharmacy_id');
+    $order->doctor_id=$request->input('doctor_id');
+    $order->patient_id=$request->input('patient_id');
+    $order->patient_address_id=$patient_address_id;
+    $order->is_insured=$request->input('is_insured');
+    $order->price=0;
+
+        if (auth()->user()->hasRole('admin')){
+            $order->creator_type = 'admin';
+        }
+        if (auth()->user()->hasRole('pharmacy')){
+            $order->creator_type = 'pharmacy';
+        }
+        if (auth()->user()->hasRole('doctor')){
+            $order->creator_type = 'doctor';
+        }
+        if (auth()->user()->hasRole('patient')){
+            $order->creator_type = 'patient';
+        }
+
+        $medicineOrder= MedicineOrder::where('order_id',$order->id)->first();
+        $medicineOrder->quantity=$request->input('quantity');
+        $medicineOrder->medicine_id=$request->medicine_id;
+
+        $order->price = Order::totalPrice($request->quantity, $request->medicine_id);
+        $order->status="progressing";
+
+        $order->save();
+        $medicineOrder->save();
+        return to_route('orders.index');
    }
 
 
 
 
    public function destroy(Request $request, $id){
-    dd($request);
     $order = Order::findOrFail($id);
-    $orderImage= OrderImage::findOrFail($order->image->id);
+    $medicineOrder = MedicineOrder::where('order_id',$id);
 
     $order->delete();
-    $orderImage->delete();
+    $medicineOrder->delete();
     return response()->json(['success'=>'User Deleted Successfully!']);
 }
 }

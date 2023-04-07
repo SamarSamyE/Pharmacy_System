@@ -20,17 +20,9 @@
                 <option value="{{$patient->id}}" selected>{{$PastPatient}}</option>
             </select>
         </div>
-<!--
-        <div class="form-group">
-    <label for="is_insured">Is Insured?</label>
-    <select class="form-control" id="is_insured" name="is_insured">
-        <option value="1" >Yes</option>
-        <option value="0">No</option>
-        <option value="0" selected>{{$order->is_insured}}</option>
-    </select>
 
-    </div> -->
 
+        
     <div class="form-group">
     <label for="is_insured">Is Insured?</label>
       <select class="form-control" id="is_insured" name="is_insured">
