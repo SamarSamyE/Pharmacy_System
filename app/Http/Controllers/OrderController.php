@@ -49,12 +49,17 @@ class OrderController extends Controller
         }
         if (auth()->user()->hasRole('pharmacy')){
             $order->creator_type = 'pharmacy';
+            $order->pharmacy_id=auth()->user()->id;
         }
         if (auth()->user()->hasRole('doctor')){
             $order->creator_type = 'doctor';
+            $order->doctor_id=auth()->user()->id;
+            $order->pharmacy_id=auth()->user()->pharmacy_id;
         }
         if (auth()->user()->hasRole('patient')){
             $order->creator_type = 'patient';
+            $order->patient_id=auth()->user()->id;
+
         }
 
         $medicineOrder= new MedicineOrder();
@@ -62,9 +67,10 @@ class OrderController extends Controller
         $medicineOrder->medicine_id=$request->medicine_id;
 
         $order->price = Order::totalPrice($request->quantity, $request->medicine_id);
-        $order->status="progressing";
+        $order->status="processing";
+        // dd($order);
         $order->save();
-
+        
         $medicineOrder->order()->associate($order);
         $medicineOrder->save();
         return to_route('orders.index');
@@ -114,26 +120,31 @@ class OrderController extends Controller
     $order->is_insured=$request->input('is_insured');
     $order->price=0;
 
-        if (auth()->user()->hasRole('admin')){
-            $order->creator_type = 'admin';
-        }
-        if (auth()->user()->hasRole('pharmacy')){
-            $order->creator_type = 'pharmacy';
-        }
-        if (auth()->user()->hasRole('doctor')){
-            $order->creator_type = 'doctor';
-        }
-        if (auth()->user()->hasRole('patient')){
-            $order->creator_type = 'patient';
-        }
+    if (auth()->user()->hasRole('admin')){
+        $order->creator_type = 'admin';
+    }
+    if (auth()->user()->hasRole('pharmacy')){
+        $order->creator_type = 'pharmacy';
+        $order->pharmacy_id=auth()->user()->id;
+    }
+    if (auth()->user()->hasRole('doctor')){
+        $order->creator_type = 'doctor';
+        $order->doctor_id=auth()->user()->id;
+        $order->pharmacy_id=auth()->user()->pharmacy_id;
+    }
+    if (auth()->user()->hasRole('patient')){
+        $order->creator_type = 'patient';
+        $order->patient_id=auth()->user()->id;
+
+    }
 
         $medicineOrder= MedicineOrder::where('order_id',$order->id)->first();
         $medicineOrder->quantity=$request->input('quantity');
         $medicineOrder->medicine_id=$request->medicine_id;
 
         $order->price = Order::totalPrice($request->quantity, $request->medicine_id);
-        $order->status="progressing";
-
+        $order->status= $request->input('status');
+        
         $order->save();
         $medicineOrder->save();
         return to_route('orders.index');

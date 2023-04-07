@@ -24,7 +24,7 @@ class OrderFactory extends Factory
             'area_id' => fake()->numberBetween(1, 5),
             'is_insured'=>fake()->boolean,
             'status'=>'new',
-            'creator_type'=>fake()->randomElement(['admin','patient']),
+            'creator_type'=>fake()->randomElement(['admin','patient','doctor','pharmacy']),
             'patient_address_id'=>fake()->numberBetween($min = 1, $max = 10),
             'price'=>0,
 
