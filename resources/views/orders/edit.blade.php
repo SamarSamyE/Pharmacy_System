@@ -6,12 +6,12 @@
 
 @section('content')
 <div class="container w-75 card mt-5 shadow-lg">
-
+@if($order->status !='WaitingForUserConfirmation')
      <form method="POST" action="{{route('orders.update',$order->id)}}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
          <div class="mb-3">
-
+@hasanyrole('admin|pharmacy')
             <label for="exampleFormControlTextarea1" class="form-label"><strong>User Name</strong></label>
             <select name="patient_id" class="form-control">
                 @foreach($patients as $patient)
@@ -41,7 +41,7 @@
                    <option value="{{$medicine->id}}" selected>{{$pastMedicine->name}}</option>
             </select>
         </div>
-
+@endrole
         @role('admin')
         <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label"><strong>pharmacy Name</strong></label>
@@ -63,13 +63,12 @@
             </select>
         </div>
         @endrole
-
+@hasanyrole('admin|pharmacy')
         <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label"><strong>Quantity</strong></label>
             <input type="text" name="quantity" class="form-control" id="exampleFormControlTextarea1" rows="3" value="{{$order->medicineOrder->quantity}}">
         </div>
-
-
+@endrole
         <div class="form-group" data-select2-id="13">
                 <label for="status">status</label>
                 <select name="status" class="form-control" style="width: 100%;"  aria-hidden="true">
@@ -80,12 +79,11 @@
                     <option>WaitingForUserConfirmation</option>
                 </select>
               </div>
-
-
-
-
         <button class="btn btn-success fs-4 mb-3">Submit</button>
     </form>
+    @else
+        <p>You can't edit now, We wait the user confirmation</p>
+    @endif
 
 </div>
 @endsection

@@ -122,6 +122,7 @@ class OrderController extends Controller
    {
 
     $order =Order::find($id);
+    if(auth()->user()->hasRole('admin') ||auth()->user()->hasRole('pharmacy') || auth()->user()->hasRole('patient') ){
     $patient_address_id= PatientAddress::where('id',$request->patient_id)->first()->id;
     $order->patient_id=$request->input('patient_id');
     $order->pharmacy_id=$request->input('pharmacy_id');
@@ -130,36 +131,29 @@ class OrderController extends Controller
     $order->patient_address_id=$patient_address_id;
     $order->is_insured=$request->input('is_insured');
     $order->price=0;
+    $medicineOrder= MedicineOrder::where('order_id',$order->id)->first();
+    $medicineOrder->quantity=$request->input('quantity');
+    $medicineOrder->medicine_id=$request->medicine_id;
 
-        // if (auth()->user()->hasRole('admin')){
-        //     $order->creator_type = 'admin';
-        // }
-        // if (auth()->user()->hasRole('pharmacy')){
-        //     $order->creator_type = 'pharmacy';
-        // }
-        // if (auth()->user()->hasRole('doctor')){
-        //     $order->creator_type = 'doctor';
-        // }
-        // if (auth()->user()->hasRole('patient')){
-        //     $order->creator_type = 'patient';
-        // }
-        if (auth()->user()->hasRole('admin')){
+    $order->price = Order::totalPrice($request->quantity, $request->medicine_id);
+
+         if (auth()->user()->hasRole('admin')){
             $order->creator_type = 'admin';
         }
         if (auth()->user()->hasRole('pharmacy')){
             $order->creator_type = 'pharmacy';
             $order->pharmacy_id=auth()->user()->typeable_id;
         }
-        if (auth()->user()->hasRole('doctor')){
-            $order->creator_type = 'doctor';
-            $order->doctor_id=auth()->user()->typeable_id;
-            $order->pharmacy_id=auth()->user()->pharmacy_id;
-        }
+
         if (auth()->user()->hasRole('patient')){
             $order->creator_type = 'patient';
             $order->patient_id=auth()->user()->typeable_id;
         }
+    }
+        else if(auth()->user()->hasRole('doctor')){
+            
 
+        }
         $medicineOrder= MedicineOrder::where('order_id',$order->id)->first();
         $medicineOrder->quantity=$request->input('quantity');
         $medicineOrder->medicine_id=$request->medicine_id;

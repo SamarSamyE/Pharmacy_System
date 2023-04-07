@@ -118,27 +118,7 @@
               </p>
             </a>
           </li>
-   
-        @role('doctor')
-        <li class="nav-item">
-            <a href="{{ route('doctors.index')}}" class="nav-link">
-              <i class="nav-icon far fa-solid fa-hospital"></i>
-              <p>
-                Profile
-              </p>
-            </a>
-          </li>
-        @endrole
-        @role('pharmacy')
-        <li class="nav-item">
-            <a href="{{ route('pharmacies.index')}}" class="nav-link">
-              <i class="nav-icon far fa-solid fa-hospital"></i>
-              <p>
-                Profile
-              </p>
-            </a>
-          </li>
-        @endrole
+
         @role('admin')
           <li class="nav-item">
             <a href="{{ route('pharmacies.index')}}" class="nav-link">
@@ -174,6 +154,27 @@
             </a>
           </li>
           @endrole
+
+        @role('doctor')
+        <li class="nav-item">
+            <a href="{{ route('doctors.index')}}" class="nav-link">
+              <i class="nav-icon far fa-solid fa-hospital"></i>
+              <p>
+                Profile
+              </p>
+            </a>
+          </li>
+        @endrole
+        @role('pharmacy')
+        <li class="nav-item">
+            <a href="{{ route('pharmacies.index')}}" class="nav-link">
+              <i class="nav-icon far fa-solid fa-hospital"></i>
+              <p>
+                Profile
+              </p>
+            </a>
+          </li>
+        @endrole
           @hasanyrole("admin|pharmacy")
           <li class="nav-item">
             <a href="{{ route('doctors.index')}}" class="nav-link">
@@ -192,7 +193,7 @@
             </a>
           </li>
           @endrole
-          @hasanyrole("admin|pharmacy|doctor")
+          @hasanyrole("admin|pharmacy")
           <li class="nav-item">
             <a href="{{ route('medicines.index')}}" class="nav-link">
               <i class="nav-icon fas fa-pills"></i>
