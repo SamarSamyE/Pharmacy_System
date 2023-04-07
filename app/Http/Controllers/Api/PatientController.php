@@ -77,16 +77,16 @@ class PatientController extends Controller
 
     
     public function verify(Request $request, $id, $hash)
-    {
-        $client = Patient::findOrFail($id);
+    {  dd("here");
+        $user = User::findOrFail($id);
 
-        if (! hash_equals((string) $hash, sha1($client->getEmailForVerification()))) {
+        if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
             throw new AuthorizationException();
         }
 
-        $client->markEmailAsVerified();
-        $client->save();
-        $client->notify(new PatientVerification());
+        $user->markEmailAsVerified();
+        $user->save();
+        $user->notify(new PatientVerification());
         return response()->json([
         'message' => 'Email verified successfully'
     ]);
