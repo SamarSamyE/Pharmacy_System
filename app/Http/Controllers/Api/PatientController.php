@@ -77,7 +77,7 @@ class PatientController extends Controller
 
     
     public function verify(Request $request, $id, $hash)
-    {  dd("here");
+    { 
         $user = User::findOrFail($id);
 
         if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
