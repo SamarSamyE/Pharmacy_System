@@ -7,8 +7,8 @@ use App\Http\Controllers\PharmacyOwnerController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MedicineController;
-use App\Http\Middleware\BanMiddleware;
-
+use App\Http\Controllers\StripePaymentController;
+use App\Http\Controllers\AreaController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -89,6 +89,17 @@ Route::group(['name' => 'Orders','prefix' => 'Orders','middleware' =>['role: adm
     Route::post('/', [OrderController::class, 'store'])->name('Orders.store');
     Route::put('/update/{orders}', [OrderController::class, 'update'])->name('Orders.update');
 });
+
+Route::get('stripe', [StripePaymentController::class , 'stripe']);
+//Route::get('stripe/{order}', [StripePaymentController::class , 'stripe']);
+Route::post('stripe/{order}', [StripePaymentController::class, 'stripePost'])->name('stripe.post');
+
+Route::get('Area',[AreaController::class ,'index'])->name('area.index');
+Route::get('/area/create', [AreaController::class,'create'])->name('area.create');
+Route::post('/area', [AreaController::class, 'store'])->name('area.store');
+Route::get('/area/{area}/edit', [AreaController::class,'edit'])->name('area.edit');
+Route::put('/area/{id}', [AreaController::class, 'update'])->name('area.update');
+Route::delete('/area/{id}', [AreaController::class, 'destroy'])->name('area.destroy');
 
 Auth::routes();
 

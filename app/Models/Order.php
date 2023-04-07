@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -47,6 +48,14 @@ class Order extends Model
     //     return $this->belongsToMany(MedicineOrder::class);
     // }
 
+    protected function price(): Attribute
+    {
+        return Attribute::make(
+            get: fn (int $value) => $value / 100,
+            set: fn (int $value) => intval($value) * 100,
+
+        );
+    }
     public static function totalPrice( $quantity ,$MedicineOreder){
         $totalPrice = 0;
             $price = Medicine::where('id',$MedicineOreder)->first()->price;
@@ -55,4 +64,5 @@ class Order extends Model
         return $totalPrice;
     }
 
+    
 }

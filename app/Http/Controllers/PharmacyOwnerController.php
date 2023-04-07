@@ -82,8 +82,8 @@ public function update(Request $request, $id)
 
 }
 
-    public function store(Request $request)
-    {
+public function store(Request $request)
+{
        
 //   $doctor=new Doctor();
   $user = new User([
@@ -103,21 +103,11 @@ public function update(Request $request, $id)
   $doctor=new Doctor([
     'national_id' => $request->input('national_id'),
     'pharmacy_id' => $request->input('pharmacy_id')
-
-
   ]);
 
   $doctor->save();
   $user->typeable()->associate($doctor);
   $user->save();
-
-//   $doctor->national_id = $request->input('national_id');
-//   $doctor->type->name = $request->input('name');
-//   $doctor->type->email = $request->input('email');
-
-//   $doctor->is_banned = $request->input('is_banned');
- 
-  
         return to_route('Doctors.index');
 
 
