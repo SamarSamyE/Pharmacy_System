@@ -35,8 +35,8 @@ class OrderController extends Controller
     {  
         $order  = Order::find($id);
         if($order->status == 'New'){
-            $order->status = $request->status;
             $order->patient_address_id = $request->patient_address_id;
+            $order->status = 'New';
 
             $order->save();
 
