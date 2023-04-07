@@ -21,43 +21,42 @@ class OrdersDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
 {
-        return (new EloquentDataTable($query))
+    return (new EloquentDataTable($query))
 
-         ->addColumn('actions', function($model) {
-                return '
-                    <div class="d-flex flex-row justify-content-center">
-                        <div class="d-flex flex-row gap-2">
-                            <div>
-                                <a class="btn btn-success rounded" href="'.route("orders.edit", $model->id).'">
-                                    Edit
-                                </a>
-                            </div>
-                            <div>
-                                <a class="btn btn-primary rounded" href="'.route("orders.show", $model->id).'">
-                                    Show
-                                </a>
-                            </div>
-                            <form method="post" action="'.route("orders.destroy", $model->id).'" onsubmit="return confirm(\'Are you sure you want to delete this order?\')">
-                                '.method_field("DELETE").'
-                                '.csrf_field().'
-                                <button class="btn btn-danger fs-4">Delete</button>
-                            </form>
+     ->addColumn(
+         'actions',
+         '
+                <div class="d-flex flex-row justify-content-center" >
+                     <div class="d-flex flex-row gap-2">
+                     <div>
+                            <a class="btn btn-success rounded" href="{{Route("orders.show",$id)}}" >
+                                Show
+                            </a>
+                    </div>
+                    <div>
+                        <a  class="btn btn-primary rounded" id="{{$id}}" href="{{Route("orders.edit",$id)}}">
+                            Edit
+                        </a>
+                        </div>
+                        <div>
+                        <a  href="javascript:void(0)"  id="delete-order" data-url="{{ route("orders.destroy",$id)}}"
+                        class="btn btn-danger">Delete</a>
                         </div>
                     </div>
-                ';
-            })
+                </div>'
+     )
 
 
     ->rawColumns(['actions'])
-        ->setRowId('id');
-}
+    ->setRowId('id');
+
 
 
 
     /**
      * Get the query source of dataTable.
      */
-
+}
      public function query(Order $model): QueryBuilder
      {
         if (auth()->user()->hasRole('pharmacy')) {

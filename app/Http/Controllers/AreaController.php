@@ -55,7 +55,7 @@ class AreaController extends Controller
     public function destroy(Request $request, $id){
         $area = Area::findOrFail($id);
         $area->delete();
-        return redirect()->route('areas.index');
+        return response()->json(['success' => 'Area deleted successfully!' ]);
     }
 
 }

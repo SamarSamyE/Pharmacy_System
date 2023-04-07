@@ -57,7 +57,7 @@ class DoctorsDataTable extends DataTable
                     </a>
                     </div>
                     <div>
-                    <a  href="javascript:void(0)"  id="delete-user"data-url="{{ route("doctors.destroy",$id)}}"
+                    <a  href="javascript:void(0)"  id="delete-doctor" data-url="{{ route("doctors.destroy",$id)}}"
                     class="btn btn-danger">Delete</a>
                     </div>
                 </div>

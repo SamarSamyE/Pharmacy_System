@@ -33,20 +33,20 @@ class MedicinesDataTable extends DataTable
              </a>
                      </div>
                      <div>
-                        
+
                         <a  class="btn btn-primary rounded" id="{{$id}}" href="{{Route("medicines.edit",$id)}}">
                         Edit
                      </a>
                     </div>
                     <div>
-                    <a  href="javascript:void(0)"  id="delete-user"data-url="{{ route("medicines.destroy",$id)}}"
+                    <a  href="javascript:void(0)"  id="delete-medicine" data-url="{{ route("medicines.destroy",$id)}}"
                     class="btn btn-danger">Delete</a>
                     </div>
                 </div>
             </div>'
         )
         ->rawColumns(['actions'])
-        
+
             ->setRowId('id');
     }
 
@@ -86,7 +86,7 @@ class MedicinesDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-           
+
             Column::make('id'),
             Column::make('type'),
             Column::make('name'),

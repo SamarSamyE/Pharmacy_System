@@ -89,7 +89,7 @@ class MedicineController extends Controller
     {
         $medicine = Medicine::findOrFail($id);//is the id exists or not
         $medicine->delete();
-        return redirect()->route('medicines.index');
+        return response()->json(['success' => 'Medicine deleted successfully!' ]);
     }
 
       //

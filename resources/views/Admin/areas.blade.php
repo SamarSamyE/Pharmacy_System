@@ -15,5 +15,39 @@
 @endsection
 
 @push('scripts')
+<script type="text/javascript">
+$(document).ready(function () {
+
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+$('body').on('click', '#delete-area', function () {
+
+  var areaURL = $(this).data('url');
+  var trObj = $(this);
+
+  if(confirm("Are you sure you want to remove this area?") == true){
+        $.ajax({
+            url: areaURL,
+            type: 'DELETE',
+            dataType: 'json',
+            success: function(data) {
+                alert(data.success);
+                trObj.parents("tr").remove();
+            },
+            error: function (data) {
+                    alert(data.responseJSON.error);
+                }
+        });
+  }
+
+
+});
+
+});
+</script>
     {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
 @endpush

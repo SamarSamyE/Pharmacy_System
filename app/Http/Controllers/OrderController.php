@@ -145,9 +145,10 @@ class OrderController extends Controller
    public function destroy(Request $request, $id){
     $order = Order::findOrFail($id);
     $medicineOrder = MedicineOrder::where('order_id',$id);
-    
+
     $order->delete();
     $medicineOrder->delete();
-    return redirect()->back();
+  
+    return response()->json(['success' => 'Order deleted successfully!' ]);
 }
 }

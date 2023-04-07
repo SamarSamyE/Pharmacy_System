@@ -73,7 +73,7 @@ else if(auth()->user()->hasRole('pharmacy')){
 
     public function store(StoreUserRequest $request)
     {
-        
+
         $user = new User([
         'name'=>$request->input('name'),
         'email'=>$request->input('email'),
@@ -102,7 +102,7 @@ else if(auth()->user()->hasRole('pharmacy')){
         $user = User::findOrFail($pharmacy->type->id);
         $pharmacy->delete();
         $user->delete();
-        return response()->json(['success'=>'User Deleted Successfully!']);
+        return response()->json(['success'=>'Pharmacy Deleted Successfully!']);
         // return redirect()->route('pharmacies.index');
     }
 
