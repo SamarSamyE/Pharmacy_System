@@ -13,6 +13,7 @@ class Order extends Model
         'is_insured',
         'status',
         'creator_type',
+        'creator_id',
         'pharmacy_id',
         'doctor_id',
         'patient_id',

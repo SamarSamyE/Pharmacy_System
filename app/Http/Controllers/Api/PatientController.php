@@ -10,10 +10,13 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdatePatientRequest;
 use App\Http\Resources\PatientResource;
 use App\Jobs\SendVerificationEmailJob;
+use Illuminate\Auth\Events\Registered;
 use App\Models\Patient;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Storage;
+use App\Notifications\PatientVerification;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class PatientController extends Controller
 {
@@ -64,10 +67,29 @@ class PatientController extends Controller
         $patient->save();
         $user->typeable()->associate($patient);
        $user->save();
-       
-       SendVerificationEmailJob::dispatch($user);
+
+      if ($user instanceof MustVerifyEmail && ! $user->hasVerifiedEmail()) {
+        event(new Registered($user));
+    }
        return new PatientResource($patient);
     }
+
+    
+    public function verify(Request $request, $id, $hash)
+    {
+        $client = Patient::findOrFail($id);
+
+        if (! hash_equals((string) $hash, sha1($client->getEmailForVerification()))) {
+            throw new AuthorizationException();
+        }
+
+        $client->markEmailAsVerified();
+        $client->save();
+        $client->notify(new PatientVerification());
+        return response()->json([
+        'message' => 'Email verified successfully'
+    ]);
+}
 
 
 

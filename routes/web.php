@@ -10,6 +10,8 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PatientAddressController;
 use App\Http\Controllers\RevenueController;
 use App\Http\Controllers\MedicineController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,6 +26,8 @@ use App\Http\Controllers\MedicineController;
 Route::get('/dashboard', function () {
     return view('welcome');
 })->middleware(['auth'])->name('dashboard');
+
+
 
 Route::group(['middleware' =>['auth']],function(){
 

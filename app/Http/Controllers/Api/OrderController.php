@@ -10,7 +10,8 @@ use App\Models\Patient;
 use App\Models\PatientAddress;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Notifications\PatientVerification;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class OrderController extends Controller
 {
@@ -40,10 +41,7 @@ class OrderController extends Controller
             $order->save();
 
             if ($request->hasFile('orderImg')) {
-                // dd("here!");
-                //  $oldPrescriptionImage = OrderImage::where('order_id', $order->id);
-                //  $oldPrescriptionImage->delete();
-                //  Storage::delete('order-'.$order->id );
+              
                 
                 $files = $request->file('orderImg');
                  // dd($files);
@@ -106,6 +104,7 @@ class OrderController extends Controller
 
         return $order;
     }
+
 
     //Deleting an order
     public function destroy (string $id) {

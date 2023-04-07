@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PatientController;
 use App\Http\Resources\PatientResource;
 use App\Models\User;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Hash;
@@ -21,11 +22,23 @@ use Illuminate\Validation\ValidationException;
 |
 */
 
+// Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+//     $request->fulfill();
+
+// })->middleware(['auth', 'signed'])->name('verification.verify');
+
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+})->middleware(['auth', 'signed'])->name('verification.verify');
 
 
 Route::post('/register',[PatientController::class, 'register']);
 
 Route::post('/login', [PatientController::class, 'login']);
+
+Route::get('/verifyEmail/{id}/{hash}', [PatientController::class, 'verify'])->name('verification.verify');
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     // Patient Update
