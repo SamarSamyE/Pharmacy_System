@@ -17,6 +17,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Storage;
 use App\Notifications\PatientVerification;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Hash;
 
 class PatientController extends Controller
 {
@@ -26,7 +27,7 @@ class PatientController extends Controller
             $email = $request->email;
 
             $user = User::where('email', $email)->first();
-        if (!$user || ($request->password != $user->password)){
+        if (!$user || !Hash::check($request->password, $user->password)){
                 return response([
                     'msg' => 'incorrect email or password'
                 ], 401);
@@ -47,7 +48,7 @@ class PatientController extends Controller
         $user = new User([
         'name'=>$request->name,
         'email'=>$request->email,
-        'password'=>$request->password
+        'password'=>Hash::make($request->password)
         ]);
         if ($request->hasFile('avatar')) {
 
