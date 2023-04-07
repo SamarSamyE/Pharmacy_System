@@ -23,41 +23,29 @@ class OrdersDataTable extends DataTable
 {
         return (new EloquentDataTable($query))
 
-        ->addColumn(
-            'actions',
-            '
-            <div class="d-flex flex-row justify-content-center" >
-                 <div class="d-flex flex-row gap-2">
-                 <div>
-                        <a class="btn btn-success rounded" id="{{$id}}" href="{{Route("orders.edit",$id)}}">
-                            Edit
-                         </a>
-                     </div>
-                     <div>
-                        <a class="btn btn-primary rounded" href="{{Route("orders.show",$id)}}" >
-                            Show
-                        </a>
+         ->addColumn('actions', function($model) {
+                return '
+                    <div class="d-flex flex-row justify-content-center">
+                        <div class="d-flex flex-row gap-2">
+                            <div>
+                                <a class="btn btn-success rounded" href="'.route("orders.edit", $model->id).'">
+                                    Edit
+                                </a>
+                            </div>
+                            <div>
+                                <a class="btn btn-primary rounded" href="'.route("orders.show", $model->id).'">
+                                    Show
+                                </a>
+                            </div>
+                            <form method="post" action="'.route("orders.destroy", $model->id).'" onsubmit="return confirm(\'Are you sure you want to delete this order?\')">
+                                '.method_field("DELETE").'
+                                '.csrf_field().'
+                                <button class="btn btn-danger fs-4">Delete</button>
+                            </form>
+                        </div>
                     </div>
-                    <div>
-                    <a href="javascript:void(0)" id="delete-user" data-url="{{ route("orders.destroy",$id)}}"
-                        class="btn btn-danger">
-                        Delete
-                    </a>
-                </div>
-                </div>
-            </div>'
-        )
-
-
-        // ->addColumn('Assigned Pharmacy', function (Order $order) {
-        //     return $order->pharmacy->type->name;
-        // })
-        // ->addColumn('Creator', function (Order $order) {
-        //     return $order->patient->type->name;
-        // })
-        // ->addColumn('Assigned Doctor', function (Order $order) {
-        //     return $order->doctor->type->name;
-        // })
+                ';
+            })
 
 
     ->rawColumns(['actions'])
