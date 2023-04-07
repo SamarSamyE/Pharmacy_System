@@ -62,12 +62,13 @@ class OrderController extends Controller
         if (auth()->user()->hasRole('pharmacy')){
             $order->creator_type = 'pharmacy';
             $order->pharmacy_id=auth()->user()->typeable_id;
+
         }
         if (auth()->user()->hasRole('doctor')){
             $order->creator_type = 'doctor';
             $order->doctor_id=auth()->user()->typeable_id;
             $order->pharmacy_id=auth()->user()->pharmacy_id;
-        }
+           }
         if (auth()->user()->hasRole('patient')){
             $order->creator_type = 'patient';
             $order->patient_id=auth()->user()->typeable_id;

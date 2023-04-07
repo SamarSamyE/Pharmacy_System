@@ -44,7 +44,7 @@ class OrdersDataTable extends DataTable
 
      ->addColumn(
          'actions',
-         '
+         '      
                 <div class="d-flex flex-row justify-content-center" >
                      <div class="d-flex flex-row gap-2">
                      <div>
