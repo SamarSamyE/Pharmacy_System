@@ -62,7 +62,7 @@ class User extends Authenticatable
     public function scopeFindByPharmacy($query, Pharmacy $pharmacy)
 {
     return $query->where('typeable_type', Pharmacy::class)
-                     ->where('typeable_id', $pharmacy->id)
-                     ->first();
+                    ->where('typeable_id', $pharmacy->id)
+                    ->first();
 }
 }

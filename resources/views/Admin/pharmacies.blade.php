@@ -38,15 +38,21 @@ $('body').on('click', '#delete-pharmacy', function () {
             url: pharmacyURL,
             type: 'DELETE',
             dataType: 'json',
-            success: function(data) {
-                alert(data.success);
-                trObj.parents("tr").remove();
-            },
-            error: function (data) {
-                    alert(data.responseJSON.error);
-                }
+            success: function(response) {
+            if (response.hasOwnProperty('success')) {
+            // Handle success case
+            alert(response.success);
+            trObj.parents("tr").remove();
+        } else {
+            // Display the alert message using your preferred method, e.g., a modal, toast, etc.
+            alert('Error: ' + response.message);
+        }
+    },
+    error: function (data) {
+        alert(data.responseJSON.error);
+    }
         });
-  }
+    }
 
 
 });

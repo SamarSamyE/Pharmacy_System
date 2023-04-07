@@ -41,6 +41,11 @@
                    <option value="{{$medicine->id}}" selected>{{$pastMedicine->name}}</option>
             </select>
         </div>
+
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label"><strong>Quantity</strong></label>
+            <input type="text" name="quantity" class="form-control" id="exampleFormControlTextarea1" rows="3" value="{{$order->medicineOrder->quantity}}">
+        </div>
 @endrole
         @role('admin')
         <div class="mb-3">
@@ -63,12 +68,9 @@
             </select>
         </div>
         @endrole
-@hasanyrole('admin|pharmacy')
-        <div class="mb-3">
-            <label for="exampleFormControlTextarea1" class="form-label"><strong>Quantity</strong></label>
-            <input type="text" name="quantity" class="form-control" id="exampleFormControlTextarea1" rows="3" value="{{$order->medicineOrder->quantity}}">
-        </div>
-@endrole
+
+
+
         <div class="form-group" data-select2-id="13">
                 <label for="status">status</label>
                 <select name="status" class="form-control" style="width: 100%;"  aria-hidden="true">

@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\DataTables\PharmaciesDataTable;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\Doctor;
+use App\Models\Order;
 use App\Models\PatientAddress;
 use App\Models\Pharmacy;
 use App\Models\User;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -100,10 +103,26 @@ else if(auth()->user()->hasRole('pharmacy')){
     public function destroy(Request $request, $id){
         $pharmacy = Pharmacy::findOrFail($id);
         $user = User::findOrFail($pharmacy->type->id);
-        $pharmacy->delete();
-        $user->delete();
-        return response()->json(['success'=>'Pharmacy Deleted Successfully!']);
-        // return redirect()->route('pharmacies.index');
+        $pharmacyOrders = Order::where('pharmacy_id', $id)->whereNotIn('status', ['Delivered', 'Canceled', 'Confirmed'])->orWhereNull('status')->get();
+
+
+        if( ! count($pharmacyOrders) > 0 ){
+            $pharmacy->delete();
+            $user->delete();
+            return response()->json(['success'=>'Pharmacy Deleted Successfully!']);
+        }
+        else{
+            Session::flash('alert', 'Your alert message here');
+            Session::flash('alert-type', 'error');
+
+            // Return JSON response with the alert message and type
+            return response()->json([
+                'error' => true,
+                'message' => 'you can not delete this pharmacy',
+                'type' => 'error'
+            ]);
+
+        }
     }
 
     public function showTrashed(){
