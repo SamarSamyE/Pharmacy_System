@@ -35,6 +35,7 @@
             </select>
         </div>
 
+        @role('admin')
         <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label"><strong>pharmacy Name</strong></label>
             <select name="pharmacy_id" class="form-control">
@@ -51,7 +52,9 @@
                     <option value="{{$doctor->id}}">{{$doctor->type->name}}</option>
                 @endforeach
             </select>
-</div>
+        </div>
+        @endrole
+
         <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label"><strong>Quantity</strong></label>
             <input type="text" name="quantity" class="form-control" id="exampleFormControlTextarea1" rows="3">

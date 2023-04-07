@@ -22,7 +22,7 @@
         </div>
 
 
-        
+
     <div class="form-group">
     <label for="is_insured">Is Insured?</label>
       <select class="form-control" id="is_insured" name="is_insured">
@@ -42,7 +42,7 @@
             </select>
         </div>
 
-
+        @role('admin')
         <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label"><strong>pharmacy Name</strong></label>
             <select name="pharmacy_id" class="form-control">
@@ -62,17 +62,48 @@
                 <option value="{{$doctor->id}}" selected>{{$PastDoctor->type->name}}</option>
             </select>
         </div>
+        @endrole
 
         <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label"><strong>Quantity</strong></label>
             <input type="text" name="quantity" class="form-control" id="exampleFormControlTextarea1" rows="3" value="{{$order->medicineOrder->quantity}}">
         </div>
 
+
+        <div class="form-group" data-select2-id="13">
+                <label for="status">status</label>
+                <select name="status" class="form-control" style="width: 100%;"  aria-hidden="true">
+                    <option>Processing</option>
+                    <option>Confirmed</option>
+                    <option>Delivered</option>
+                    <option>Canceled</option>
+                    <option>WaitingForUserConfirmation</option>
+                </select>
+              </div>
+
+
+
+
         <button class="btn btn-success fs-4 mb-3">Submit</button>
     </form>
 
 </div>
 @endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

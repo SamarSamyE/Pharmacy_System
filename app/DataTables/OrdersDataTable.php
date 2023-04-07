@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\Order;
+use App\Models\PatientAddress;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -22,6 +23,24 @@ class OrdersDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
 {
     return (new EloquentDataTable($query))
+    ->addColumn('Order User Name', function (Order $order) {
+        // return $order->patient->type->name;
+        return $order->patient ? $order->patient->type->name : 'Adminn';
+    })
+    ->addColumn('Doctor Name', function (Order $order) {
+    //     return $order->doctor->type->name;
+    return $order->doctor ? $order->doctor->type->name : 'N/A';
+    })
+    ->addColumn('Assigned Pharmacy', function (Order $order) {
+        return $order->pharmacy->type->name;
+    })
+    ->addColumn('Deliveing Address', function (Order $order) {
+        $patientAddress = PatientAddress::where('id', $order->patient_id)->first();
+        $buildNumber = $patientAddress->build_number;
+        $floorNumber = $patientAddress->floor_number;
+        return $patientAddress->street_name . ', ' . $buildNumber . ', ' . $floorNumber;
+    })
+    // Return the desired column value
 
      ->addColumn(
          'actions',
@@ -99,14 +118,25 @@ class OrdersDataTable extends DataTable
      public function getColumns(): array
      {
          return [
-             Column::make('id'),
-            //  Column::computed('Creator')->title('client name'),
+            Column::make('id'),
+            Column::computed('Order User Name'),
+            Column::computed('Deliveing Address'),
+            // Column::make('patient_id', 'Order User Name')
+            // ->title('Order User Name')
+            // ->render(function ($order) {
+            //     return $order->orderUserName() ? $order->orderUserName() : 'Admin';
+            // }),
+        //     Column::computed('Order User Name')
+        //     ->render(function ($order) {
+        //         return $order->patient->type->name ?? 'Admin';
+        //    }),
              Column::make('status'),
              Column::computed('is_insured')->title('is insured'),
-             Column::make('creator_type')->title('creator'),
-            //  Column::computed('Assigned Pharmacy'),
-            //  Column::computed('Assigned Doctor')->title('doctor'),
+             Column::make('creator_type')->visible(auth()->user()->hasRole("admin")),
+             Column::computed('Assigned Pharmacy')->visible(auth()->user()->hasRole("admin")),
+             Column::computed('Doctor Name'),
              Column::make('patient_address_id'),
+             Column::make('created_at'),
              Column::computed('actions')
                  ->exportable(false)
                  ->printable(false)

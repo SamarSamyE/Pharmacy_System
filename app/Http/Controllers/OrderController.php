@@ -44,17 +44,33 @@ class OrderController extends Controller
     $order->is_insured=$request->input('is_insured');
     $order->price=0;
 
+        // if (auth()->user()->hasRole('admin')){
+        //     $order->creator_type = 'admin';
+        // }
+        // if (auth()->user()->hasRole('pharmacy')){
+        //     $order->creator_type = 'pharmacy';
+        // }
+        // if (auth()->user()->hasRole('doctor')){
+        //     $order->creator_type = 'doctor';
+        // }
+        // if (auth()->user()->hasRole('patient')){
+        //     $order->creator_type = 'patient';
+        // }
         if (auth()->user()->hasRole('admin')){
             $order->creator_type = 'admin';
         }
         if (auth()->user()->hasRole('pharmacy')){
             $order->creator_type = 'pharmacy';
+            $order->pharmacy_id=auth()->user()->typeable_id;
         }
         if (auth()->user()->hasRole('doctor')){
             $order->creator_type = 'doctor';
+            $order->doctor_id=auth()->user()->typeable_id;
+            $order->pharmacy_id=auth()->user()->pharmacy_id;
         }
         if (auth()->user()->hasRole('patient')){
             $order->creator_type = 'patient';
+            $order->patient_id=auth()->user()->typeable_id;
         }
 
         $medicineOrder= new MedicineOrder();
@@ -62,7 +78,7 @@ class OrderController extends Controller
         $medicineOrder->medicine_id=$request->medicine_id;
 
         $order->price = Order::totalPrice($request->quantity, $request->medicine_id);
-        $order->status="progressing";
+        $order->status="processing";
         $order->save();
 
         $medicineOrder->order()->associate($order);
@@ -114,17 +130,33 @@ class OrderController extends Controller
     $order->is_insured=$request->input('is_insured');
     $order->price=0;
 
+        // if (auth()->user()->hasRole('admin')){
+        //     $order->creator_type = 'admin';
+        // }
+        // if (auth()->user()->hasRole('pharmacy')){
+        //     $order->creator_type = 'pharmacy';
+        // }
+        // if (auth()->user()->hasRole('doctor')){
+        //     $order->creator_type = 'doctor';
+        // }
+        // if (auth()->user()->hasRole('patient')){
+        //     $order->creator_type = 'patient';
+        // }
         if (auth()->user()->hasRole('admin')){
             $order->creator_type = 'admin';
         }
         if (auth()->user()->hasRole('pharmacy')){
             $order->creator_type = 'pharmacy';
+            $order->pharmacy_id=auth()->user()->typeable_id;
         }
         if (auth()->user()->hasRole('doctor')){
             $order->creator_type = 'doctor';
+            $order->doctor_id=auth()->user()->typeable_id;
+            $order->pharmacy_id=auth()->user()->pharmacy_id;
         }
         if (auth()->user()->hasRole('patient')){
             $order->creator_type = 'patient';
+            $order->patient_id=auth()->user()->typeable_id;
         }
 
         $medicineOrder= MedicineOrder::where('order_id',$order->id)->first();
@@ -132,7 +164,7 @@ class OrderController extends Controller
         $medicineOrder->medicine_id=$request->medicine_id;
 
         $order->price = Order::totalPrice($request->quantity, $request->medicine_id);
-        $order->status="progressing";
+        $order->status= $request->input('status');
 
         $order->save();
         $medicineOrder->save();
@@ -148,7 +180,7 @@ class OrderController extends Controller
 
     $order->delete();
     $medicineOrder->delete();
-  
+
     return response()->json(['success' => 'Order deleted successfully!' ]);
 }
 }

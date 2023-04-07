@@ -5,7 +5,7 @@
         <div class="card">
             <div class="card-header">Orders</div>
             <div class="card-body">
-            @hasanyrole('admin|patient')
+            @hasanyrole('admin|patient|doctor|pharmacy')
             <a href="{{route('orders.create')}}" class="mt-4 btn btn-success fs-4">Create New Order</a>
             @endrole
             <div class="text-center">
