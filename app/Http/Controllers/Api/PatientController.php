@@ -21,9 +21,9 @@ use Illuminate\Support\Facades\Hash;
 
 class PatientController extends Controller
 {
-   
+
     public function login(SanctumTokenRequest $request){
-           
+
             $email = $request->email;
 
             $user = User::where('email', $email)->first();
@@ -33,8 +33,8 @@ class PatientController extends Controller
                 ], 401);
             }
 
-           
-    
+
+
             $token = $user->createToken('apiToken')->plainTextToken;
 
    return (new PatientResource($user))->setToken($token);
@@ -43,7 +43,7 @@ class PatientController extends Controller
 
     public function register(RegisterPatientRequest $request)
     {
-  
+
         $patient=new Patient();
         $user = new User([
         'name'=>$request->name,
@@ -75,11 +75,10 @@ class PatientController extends Controller
        return new PatientResource($patient);
     }
 
-    
-    public function verify(Request $request, $id, $hash)
-    { 
-        $user = User::findOrFail($id);
 
+    public function verify(Request $request, $id, $hash)
+    {
+        $user = User::findOrFail($id);
         if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
             throw new AuthorizationException();
         }
@@ -95,7 +94,7 @@ class PatientController extends Controller
 
 
     public function update(UpdatePatientRequest $request)
-    { 
+    {
         $id = auth()->user()->id;
         $user = User::find($id);
         $patient = Patient::find($user->typeable_id);
@@ -109,7 +108,7 @@ class PatientController extends Controller
         $user->name = $request->name;
         $user->password = $request->password;
 
-      
+
         if ($request->hasFile('avatar')) {
             if ($patient->type->avatar) {
                 $avatarPath=$patient->type->avatar;
@@ -126,8 +125,8 @@ class PatientController extends Controller
        return new PatientResource($user);
     }
 
-    
 
-  
+
+
 
 }
