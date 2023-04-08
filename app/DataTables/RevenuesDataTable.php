@@ -24,9 +24,6 @@ class RevenuesDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-        // ->addColumn('Pharmacy Avatar',function(Pharmacy $pharmacy){
-        //     return '<img src="'. asset("storage/".$pharmacy->type->avatar) .'" width="40" class="img-circle" align="center" />';
-        // })
         ->addColumn('Pharmacy Avatar',function(Pharmacy $pharmacy){
          return '<img src="'. asset("storage/".$pharmacy->type->avatar) .'" width="40" class="img-circle" align="center" />';
        })
