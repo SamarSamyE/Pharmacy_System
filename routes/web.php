@@ -11,6 +11,8 @@ use App\Http\Controllers\PatientAddressController;
 use App\Http\Controllers\RevenueController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\OrderController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,6 +27,8 @@ use App\Http\Controllers\OrderController;
 Route::get('/dashboard', function () {
     return view('welcome');
 })->middleware(['auth'])->name('dashboard');
+
+
 
 Route::group(['middleware' =>['auth']],function(){
 
@@ -85,7 +89,7 @@ Route::get('/users', function () {
     return view('Admin/index');
 })->middleware(['auth'])->name('admin.index');
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
