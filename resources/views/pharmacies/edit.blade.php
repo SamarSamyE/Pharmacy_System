@@ -5,9 +5,14 @@
 @endsection
 
 @section('content')
-<div class="container w-75 card mt-5 shadow-lg">
+<div class="container">
 
-     <form method="POST" action="{{route('pharmacies.update',$pharmacy->id)}}" enctype="multipart/form-data">
+     <form method="POST" action="{{route('pharmacies.update',$pharmacy->id)}}" enctype="multipart/form-data"style="padding: 3%;
+    border: 2px solid #abe3c0;;
+    margin-right: 10%;
+    width: 50%;
+   
+    margin-left: 23%;">
         @csrf
         @method('PUT')
         <div class="mt-3 mb-3">
@@ -43,7 +48,16 @@
             <input type="file" name="avatar" class="form-control" id="exampleFormControlTextarea1" rows="3">
         </div>
 
-        <button class="btn btn-success fs-4 mb-3">Submit</button>
+        <button class="btn btn-success fs-4 mb-3" style="
+border:none;
+        font-weight: 800;
+    color: white;
+    width:30%;
+    
+    background-color:#53be8b;>;
+    font-size: 20px;
+    margin-left: 32%;
+    ">Submit</button>
     </form>
 </div>
 @if ($errors->any())

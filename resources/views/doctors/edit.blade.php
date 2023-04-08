@@ -3,7 +3,16 @@
 @section('title') Show @endsection
 
 @section('content')
-<form method="post" action="{{route('doctors.update', $doctor->id)}}" enctype="multipart/form-data">
+
+<form method="post" action="{{route('doctors.update', $doctor->id)}}"  style="padding: 3%;
+    border: 2px solid #abe3c0;;
+    margin-right: 10%;
+    width: 50%;
+   height:20%;
+    margin-left: 23%;"
+ enctype="multipart/form-data"
+
+>
     @csrf
     @method('PUT')
 
@@ -40,6 +49,16 @@
         <br><br><br>
 
 
-<button type="primary" class="btn btn-success">update</button>
+<button type="primary" class="btn btn-success"  style="
+border:none;
+        font-weight: 800;
+    color: white;
+    width:30%;
+    
+    background-color:#53be8b;>;
+    font-size: 20px;
+    margin-left: 32%;
+    "
+    >update</button>
 </form>
 @endsection
