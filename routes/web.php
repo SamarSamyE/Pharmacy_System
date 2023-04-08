@@ -74,7 +74,8 @@ Route::group(['middleware' =>['auth']],function(){
     Route::get('/areas/{area}', [AreaController::class, 'show'])->name('area.show');
     Route::get('/medicines/{area}', [MedicineController::class, 'show'])->name('medicines.show');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
-
+    Route::post('/confirm', [OrderController::class, 'confirm'])->name('orders.confirm');
+    Route::delete('/orders/{id}/cancelled', [OrderController::class, 'cancel'])->name('orders.cancelled');
 
 
     Route::delete('/pharmacies/{id}', [PharmacyController::class, 'destroy'])->name('pharmacies.destroy');
@@ -90,8 +91,8 @@ Route::group(['middleware' =>['auth']],function(){
     Route::post('/ban', [DoctorController::class, 'ban'])->name('doctor.ban');
     Route::post('/unban', [DoctorController::class, 'unban'])->name('doctor.unban');
 
-    Route::get('stripe', [StripePaymentController::class , 'stripe']);
-    // Route::get('stripe/{order}', [StripePaymentController::class , 'stripe']);
+    // Route::get('stripe', [StripePaymentController::class , 'stripe']);
+    Route::get('stripe/{order}', [StripePaymentController::class , 'stripe']);
     Route::post('stripe/{order}', [StripePaymentController::class, 'stripePost'])->name('stripe.post');
 
 });

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\OrdersDataTable;
+use App\Jobs\OrderConfirmationJob;
+use App\Mail\OrderConfirmationMail;
 use App\Models\Doctor;
 use App\Models\Medicine;
 use App\Models\MedicineOrder;
@@ -11,7 +13,9 @@ use App\Models\OrderImage;
 use App\Models\Patient;
 use App\Models\PatientAddress;
 use App\Models\Pharmacy;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
@@ -61,12 +65,16 @@ class OrderController extends Controller
             $order->creator_type = 'patient';
             $order->patient_id=auth()->user()->typeable_id;
         }
+
         $quantity = array_map('intval', $request->qun);
         $orderMedicine = $request->medicine_id;
         $order->status="processing";
         $order->save();
         Order::createOrderMedicine($order, $quantity, $orderMedicine);
         $order->price = Order::totalPrice($quantity, $orderMedicine);
+        $confirmUrl=url("stripe/{order}");
+        $cancelUrl=url("/orders/$order->id/cancelled");
+        Mail::to("samarsamy@gmail.com")->send(new OrderConfirmationMail($order,$order->patient->type,$confirmUrl,$cancelUrl));
         return to_route('orders.index');
    }
 
@@ -134,7 +142,14 @@ class OrderController extends Controller
     }
     $editedQuantity = array_map('intval', $request->qun);
     $editedOrderMedicine = $request->medicine_id;
+
     $order->status= $request->input('status');
+
+    // if ($order->status == "WaitingForUserConfirmation") {
+    //     $enduser2 = User::where('id', '=', $order->patient->type->id)->first();
+    //     dispatch(new OrderConfirmationJob($enduser2, $order));
+    // }
+
     $order->save();
     Order::updateOrderMedicine($order, $editedQuantity, $editedOrderMedicine);
     $order->price = Order::totalPrice($editedQuantity, $editedOrderMedicine);
@@ -166,6 +181,17 @@ class OrderController extends Controller
         return to_route('orders.index');
    }
 
+   public function confirm($id){
+
+   }
+
+   public function cancel($id){
+    $order=Order::find($id);
+    $order->status="Canceled";
+    $order->save();
+
+
+   }
 
 
 

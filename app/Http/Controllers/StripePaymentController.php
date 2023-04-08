@@ -14,9 +14,9 @@ class StripePaymentController extends Controller
         $this->middleware('auth');
     }
 
-    public function stripe()
+    public function stripe(Order $order)
     {
-        $order = Order::where('id',6)->first();
+        // $order = Order::where('id',6)->first();
        // 4242 4242 4242 4242
         return view('stripe',compact("order"));
     }

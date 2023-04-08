@@ -26,8 +26,7 @@ class OrderFactory extends Factory
             'status'=>'new',
             'creator_type'=>fake()->randomElement(['admin','patient','pharmacy','doctor']),
             'patient_address_id'=>fake()->numberBetween($min = 1, $max = 10),
-            'price'=>0,
-
+            'price'=>rand(10,100),
 
         ];
     }
