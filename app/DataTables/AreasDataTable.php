@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\Area;
+use App\Models\Country;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -22,23 +23,21 @@ class AreasDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+        ->addColumn('Capital', function (Area $area) {
+            return $area->country->capital;
+        })
         ->addColumn(
             'actions',
             '
             <div class="d-flex flex-row justify-content-center" >
                 <div class="d-flex flex-row gap-2">
-                <div>
-                    <a class="btn btn-success rounded" href="{{Route("areas.show",$id)}}" >
-                        Show
-                    </a>
-                </div>
-                <div>
-                    <a class="btn btn-primary rounded" id="{{$id}}" href="{{Route("areas.edit",$id)}}">
+                    <div>
+                    <a class="btn btn-primary rounded" id="{{$id}}" href="{{Route("area.edit",$id)}}">
                         Edit
                     </a>
                 </div>
                 <div>
-                    <a href="javascript:void(0)" id="delete-area" data-url="{{ route("areas.destroy",$id)}}" class="btn btn-danger">
+                    <a href="javascript:void(0)" id="delete-area" data-url="{{ route("area.destroy",$id)}}" class="btn btn-danger">
                         Delete
                     </a>
                 </div>
@@ -90,12 +89,20 @@ class AreasDataTable extends DataTable
             Column::make('name'),
             Column::make('address'),
             Column::make('created_at'),
-            Column::make('updated_at'),
+           // Column::computed('actions')
+            // ->exportable(false)
+            // ->printable(false)
+            // ->width(60)
+            // ->addClass('text-center'),
+            // Column::make('name'),
+            // Column::make('address'),
+            Column::computed('Capital'),
             Column::computed('actions')
-            ->exportable(false)
-            ->printable(false)
-            ->width(60)
-            ->addClass('text-center'),
+                  ->exportable(false)
+                  ->printable(false)
+                  ->width(60)
+                  ->addClass('text-center'),
+
         ];
     }
 

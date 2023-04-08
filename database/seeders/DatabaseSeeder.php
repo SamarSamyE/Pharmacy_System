@@ -22,8 +22,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AssignRoleSeeder::class);
         $this->call(MedicineSeeder::class);
         $this->call(MedicineOrderSeeder::class);
-
-
-
+        $this->call(CountriesSeeder::class);
     }
 }

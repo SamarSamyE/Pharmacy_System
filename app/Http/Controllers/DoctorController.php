@@ -139,4 +139,23 @@ if (auth()->user()->hasRole('admin')) {
 
   }
 
+  public function ban(Request $request)
+{
+    $id = $request->id;
+    $doctor = Doctor::find($id);
+    $banned = $doctor->ban();
+    return to_route('doctors.index');
+    // return (new DoctorsDataTable)->render('Admin.doctors')->with('banned', $banned);
+
+}
+public function unban(Request $request)
+    {
+        $id = $request->id;
+        $doctor = Doctor::find($id);
+        $unbanned = $doctor->unban();
+        return to_route('doctors.index');
+        // return (new DoctorsDataTable)->render('Admin.doctors')->with('banned', $unbanned);
+
+    }
+
 }

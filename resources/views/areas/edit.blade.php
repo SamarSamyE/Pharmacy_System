@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="container w-75 card mt-5 shadow-lg">
-    <form method="POST" action="{{route('areas.update',$area->id)}}" >
+    <form method="POST" action="{{route('area.update',$area->id)}}" >
         @csrf
         @method('PUT')
         <div class="mt-3 mb-3">

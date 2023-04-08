@@ -44,7 +44,7 @@ class OrdersDataTable extends DataTable
 
      ->addColumn(
          'actions',
-         '      
+         '
                 <div class="d-flex flex-row justify-content-center" >
                      <div class="d-flex flex-row gap-2">
                      <div>
@@ -109,7 +109,6 @@ class OrdersDataTable extends DataTable
                  Button::make('reload')
              ]);
      }
-
      /**
       * Get the dataTable columns definition.
       *
@@ -144,7 +143,6 @@ class OrdersDataTable extends DataTable
                  ->addClass('text-center')
          ];
      }
-
      /**
       * Get filename for export.
       *

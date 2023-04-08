@@ -22,3 +22,5 @@ class MedicineOrder extends Model
         return $this->hasMany(Medicine::class);
     }
 }
+
+

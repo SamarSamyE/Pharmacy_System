@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Traits\HasRoles;
@@ -13,7 +14,6 @@ class Order extends Model
         'is_insured',
         'status',
         'creator_type',
-        'creator_id',
         'pharmacy_id',
         'doctor_id',
         'patient_id',
@@ -55,4 +55,19 @@ class Order extends Model
 
         return $totalPrice;
     }
+
+    // public function medicineOrder(){
+    //     return $this->belongsToMany(MedicineOrder::class);
+    // }
+
+    protected function price(): Attribute
+    {
+        return Attribute::make(
+            get: fn (int $value) => $value / 100,
+            set: fn (int $value) => intval($value) * 100,
+
+        );
+    }
+
+
 }

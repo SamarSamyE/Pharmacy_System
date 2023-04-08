@@ -14,9 +14,9 @@ class AreaSeeder extends Seeder
     public function run(): void
     {
         //
-        Area::factory()
-        ->count(5)
-        ->create();
+        Area::factory(10)->create([
+            "country_id" => fake()->randomElement([818,4,8,12,16])
+        ]);
 
     }
 }

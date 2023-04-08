@@ -25,3 +25,4 @@ class MedicineFactory extends Factory
         ];
     }
 }
+

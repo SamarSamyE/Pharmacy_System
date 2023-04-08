@@ -63,7 +63,22 @@ class DoctorsDataTable extends DataTable
                 </div>
             </div>'
     )
-    ->rawColumns(['avatar', 'actions'])
+    ->addColumn('IS_Banned', function ($doc) {
+        return '
+            <form method="post" action="'.route('doctor.ban').'" class="d-inline">
+                '.csrf_field().'
+                <input type="hidden" name="id" value="'.$doc->type->typeable_id.'" />
+                <button type="submit" title="Ban" name="ban" class="form-button">ban</button>
+            </form>
+
+            <form method="post" action="'.route('doctor.unban').'" class="d-inline">
+                '.csrf_field().'
+                <input type="hidden" name="id" value="'.$doc->type->typeable_id.'" />
+                <button type="submit" title="UnBan" name="unban" class="form-button">unban</button>
+            </form>
+        ';
+    })
+    ->rawColumns(['avatar', 'actions','IS_Banned'])
     ->setRowId('id');
 
     }
@@ -123,6 +138,11 @@ class DoctorsDataTable extends DataTable
             Column::computed('Doctor Name')->addClass('text-center')->searchable(),
             Column::computed('Doctor Email')->addClass('text-center'),
             Column::computed('actions')
+                        ->exportable(false)
+                        ->printable(false)
+                        ->width(60)
+                        ->addClass('text-center'),
+            Column::computed('IS_Banned')
                         ->exportable(false)
                         ->printable(false)
                         ->width(60)

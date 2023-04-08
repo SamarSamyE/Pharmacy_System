@@ -138,7 +138,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('areas.index')}}" class="nav-link">
+            <a href="{{ route('area.index')}}" class="nav-link">
               <i class="nav-icon fas ion-ios-location"></i>
               <p>
                 Areas
