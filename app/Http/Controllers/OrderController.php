@@ -34,6 +34,8 @@ class OrderController extends Controller
 
 
    public function store(Request $request){
+
+   // dd($request);
    $order =new Order();
     $patient_address_id= PatientAddress::where('id',$request->patient_id)->first()->id;
     $order->patient_id=$request->input('patient_id');
@@ -62,10 +64,10 @@ class OrderController extends Controller
         }
 
         $medicineOrder= new MedicineOrder();
-        $medicineOrder->quantity=$request->input('quantity');
+        $medicineOrder->quantity=$request->input('qun');
         $medicineOrder->medicine_id=$request->medicine_id;
 
-        $order->price = Order::totalPrice($request->quantity, $request->medicine_id);
+        $order->price = Order::totalPrice($request->qun, $request->medicine_id);
         $order->status="processing";
         $order->save();
 

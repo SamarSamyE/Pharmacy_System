@@ -50,8 +50,13 @@ class Order extends Model
     }
     public static function totalPrice( $quantity ,$MedicineOreder){
         $totalPrice = 0;
-        $price = Medicine::where('id',$MedicineOreder)->first()->price;
-            $totalPrice += $price * $quantity;
+        for ($i = 0; $i < count($MedicineOreder); $i++){
+            $price = Medicine::where('id',$MedicineOreder[$i])->first()->price;
+            
+            $totalPrice += $price * $quantity[$i];
+        }
+       
+            //dd($totalPrice);
 
         return $totalPrice;
     }
