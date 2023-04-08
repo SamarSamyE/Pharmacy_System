@@ -18,7 +18,7 @@ class PharmacyOwnerController extends Controller
         $allDoctors = Doctor::get();
     //    dd ($allDoctors);
             return view('pharmacy/Doctors/index', ['Doctor' => $allDoctors]);
-            
+
     }
 
     public function create()
@@ -34,7 +34,7 @@ class PharmacyOwnerController extends Controller
     public function show($id)
    {
  $doctor = Doctor::where('id', $id)->first();
- 
+
     // dd($doctor);
     return view('pharmacy/Doctors/show', ['doctor' => $doctor]);
 
@@ -44,12 +44,12 @@ class PharmacyOwnerController extends Controller
 
     }
 
-       
+
     public function edit($id)//when i click on edit so to go to that post im clicking on ive to send id of that post
-    
+
     {
         $doctor = Doctor::find($id);
-      
+
         return view('pharmacy/Doctors/edit', compact('doctor'));
     }
 
@@ -58,7 +58,7 @@ public function update(Request $request, $id)
 {
     $doctor = Doctor::find($id);
     $user = User::find($doctor->type->id);
-  
+
     $doctor->pharmacy_id = $request->input('pharmacy_id');
     $doctor->national_id = $request->input('national_id');
     $doctor->save();
@@ -84,7 +84,7 @@ public function update(Request $request, $id)
 
 public function store(Request $request)
 {
-       
+
 //   $doctor=new Doctor();
   $user = new User([
 
@@ -92,7 +92,7 @@ public function store(Request $request)
 'email'=>$request ->input('email'),
 'password'=>$request ->input('password')
   ]);
-      
+
   if($request->hasFile('avatar')){
 
     $avatar=request()->file('avatar');
@@ -115,7 +115,7 @@ public function store(Request $request)
 
     public function destroy(Request $request, $id)
 {
-   
+
 
         $doc = Doctor::findOrFail($id);//is the id exists or not
         $doc->delete();
@@ -125,7 +125,7 @@ public function store(Request $request)
   }
 
 
-  
+
 public function ban(Request $request)
 {
 //   dd($request);

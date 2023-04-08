@@ -106,7 +106,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/kanban.html" class="nav-link">
+            <a href="" class="nav-link">
               <i class="nav-icon fas ion-ios-location"></i>
               <p>
                 Areas

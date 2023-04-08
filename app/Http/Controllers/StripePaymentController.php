@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Session;
 use Stripe;
 use App\Models\Order;
+use Illuminate\Support\Facades\Session;
 
 class StripePaymentController extends Controller
 {
@@ -16,7 +16,7 @@ class StripePaymentController extends Controller
 
     public function stripe()
     {
-        $order = Order::where('id',23)->first();
+        $order = Order::where('id',20)->first();
        // 4242 4242 4242 4242
         return view('stripe',compact("order"));
     }
@@ -28,18 +28,18 @@ class StripePaymentController extends Controller
                 "amount" =>$order->price,
                 "currency" => "usd",
                 "source" => $request->stripeToken,
-                "description" => "Test payment from itsolutionstuff.com." 
+                "description" => "Test payment from itsolutionstuff.com."
         ]);
         $order->update([
             'status' => 'Confirmed'
         ]);
         Session::flash('success', 'Payment successful!');
-              
+
         return back();
-    
+
 
     }
- 
+
 
 }
 
