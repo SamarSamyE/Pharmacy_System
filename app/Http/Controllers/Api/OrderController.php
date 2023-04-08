@@ -3,15 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\OrderRequest;
 use App\Models\Order;
 use App\Models\OrderImage;
 use App\Models\Patient;
 use App\Models\PatientAddress;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Notifications\PatientVerification;
-use Illuminate\Auth\Access\AuthorizationException;
 
 class OrderController extends Controller
 {
@@ -82,7 +79,6 @@ class OrderController extends Controller
        
 
         $order->save();
-
 
         if ($request->hasFile('prescription')) {
 
