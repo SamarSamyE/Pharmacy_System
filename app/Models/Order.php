@@ -48,14 +48,39 @@ class Order extends Model
     public function medicineOrder(){
         return $this->hasOne(MedicineOrder::class);
     }
+
+    public static function createOrderMedicine($order, $quantity, $orderMedicine)
+    {
+        for ($i = 0; $i < count($orderMedicine); $i++) {
+            $medicine_order=new MedicineOrder();
+            $medicine_order->medicine_id=$orderMedicine[$i];
+            $medicine_order->quantity=$quantity[$i];
+            $medicine_order->order()->associate($order);
+            $medicine_order->save();
+         }
+    }
+
+    public static function updateOrderMedicine($order, $editedQuantity, $editedOrderMedicine)
+    {
+
+        for ($i = 0; $i < count($editedOrderMedicine); $i++) {
+            $medicine_order=MedicineOrder::where('order_id', $order->id)
+                    ->where('medicine_id', $editedOrderMedicine[$i])
+                    ->update([
+                        'medicine_id' => $editedOrderMedicine[$i],
+                        'quantity' => $editedQuantity[$i],
+                    ]);
+
+        }
+
+    }
     public static function totalPrice( $quantity ,$MedicineOreder){
         $totalPrice = 0;
-        for ($i = 0; $i < count($MedicineOreder); $i++){
+        for ($i = 0; $i < count($MedicineOreder  ?? []); $i++){
             $price = Medicine::where('id',$MedicineOreder[$i])->first()->price;
-            
             $totalPrice += $price * $quantity[$i];
         }
-       
+
             //dd($totalPrice);
 
         return $totalPrice;
